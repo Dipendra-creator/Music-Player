@@ -14,6 +14,15 @@ dependencies:
 
 
   cupertino_icons: ^1.0.2
+  audio_service: ^0.18.0
+  just_audio: ^0.9.12
+#  path_provider: ^2.0.1
+#  audio_session: ^0.1.6
+#  just_audio: ^0.9.11
+#  flutter_tts: ^3.2.2
+#  rxdart: ^0.27.2
+#  audio_service:
+#    path: ../
 
 dev_dependencies:
   flutter_test:
