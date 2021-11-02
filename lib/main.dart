@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:smash_media/pages/songs_page.dart';
 
 void main() {
   runApp(MyHomePage());
@@ -11,143 +13,151 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
-    TabController _tabController;
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Home(),
+    );
+  }
+}
 
-    @override
-    void initState() {
-      super.initState();
-      _tabController = TabController(length: 5, vsync: this);
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
+  TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 4, vsync: this);
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      // theme: new ThemeData(scaffoldBackgroundColor: const Color(0xFF2196F3)),
-      // color: Colors.blue,
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0.0,
-          centerTitle: true,
-          leading: IconButton(
-            icon: Icon(
-                Icons.search,
-                size: 35,
-                color: Colors.black45
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.search, size: 35, color: Colors.black45),
+          onPressed: () {
+            print('Search');
+          },
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.queue_music, size: 35, color: Colors.black45),
             onPressed: () {
-              print('Search');
+              print('Music Queue');
             },
           ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                  Icons.queue_music,
-                  size: 35,
-                  color: Colors.black45
-              ),
-              onPressed: () {
-                print('Music Queue');
-              },
+        ],
+      ),
+      body: ListView(
+        padding: EdgeInsets.only(left: 20.0),
+        children: <Widget>[
+          SizedBox(
+            height: 15,
+          ),
+          Text(
+            'Browse',
+            style: TextStyle(
+              fontFamily: 'Varela',
+              fontSize: 32,
+              fontWeight: FontWeight.bold,
+              color: Colors.black45,
             ),
-          ],
-        ),
-        body: ListView(
-          padding: EdgeInsets.only(left: 20.0),
-          children: <Widget>[
-            SizedBox(height: 15,),
-            Text(
-              'Browse',
-              style: TextStyle(
-                fontFamily: 'Varela',
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: Colors.black45,
-              ),
-            ),
-            SizedBox(height: 15,),
+          ),
+          SizedBox(
+            height: 15,
+          ),
 
-            /*TODO: TabBar */
-            TabBar(
+          /*TODO: TabBar */
+          TabBar(
+            controller: _tabController,
+            indicatorColor: Colors.transparent,
+            labelColor: Colors.blueAccent,
+            isScrollable: true,
+            labelPadding: EdgeInsets.only(right: 45),
+            unselectedLabelColor: Color(0xFFCDCDCD),
+            tabs: [
+              CreateTab(tabName: 'Songs'),
+              CreateTab(tabName: 'Playlist'),
+              CreateTab(tabName: 'Podcast'),
+              CreateTab(tabName: 'Downloaded'),
+            ],
+          ),
+          Container(
+            height: MediaQuery.of(context).size.height - 50,
+            width: double.infinity,
+            child: TabBarView(
               controller: _tabController,
-              indicatorColor: Colors.transparent,
-              labelColor: Colors.blueAccent,
-              isScrollable: true,
-              labelPadding: EdgeInsets.only(right: 45),
-              unselectedLabelColor: Color(0xFFCDCDCD),
-              tabs: [
-                Tab(
-                  child: Text(
-                    'Songs',
-                    style: TextStyle(
-                      fontFamily: 'Varela',
-                      fontSize: 20,
-                      // fontWeight: FontWeight.bold,
-                      // color: Colors.black45,
-                    ),
-                  ),
-                ),
-                Tab(
-                  child: Text(
-                    'Playlist',
-                    style: TextStyle(
-                      fontFamily: 'Varela',
-                      fontSize: 20,
-                      // fontWeight: FontWeight.bold,
-                      // color: Colors.black45,
-                    ),
-                  ),
-                ),
-                Tab(
-                  child: Text(
-                    'Podcast',
-                    style: TextStyle(
-                      fontFamily: 'Varela',
-                      fontSize: 20,
-                      // fontWeight: FontWeight.bold,
-                      // color: Colors.black45,
-                    ),
-                  ),
-                ),
-                Tab(
-                  child: Text(
-                    'Recommended',
-                    style: TextStyle(
-                      fontFamily: 'Varela',
-                      fontSize: 20,
-                      // fontWeight: FontWeight.bold,
-                      // color: Colors.black45,
-                    ),
-                  ),
-                ),
-                Tab(
-                  child: Text(
-                    'Downloaded',
-                    style: TextStyle(
-                      fontFamily: 'Varela',
-                      fontSize: 20,
-                      // fontWeight: FontWeight.bold,
-                      // color: Colors.black45,
-                    ),
-                  ),
-                ),
+              children: [
+                SongsPage(),
+                SongsPage(),
+                SongsPage(),
+                SongsPage(),
               ],
             ),
-          ],
-        ),
-        bottomNavigationBar: CurvedNavigationBar(
-          backgroundColor: Color(0xFF2196F3),
-          items: <Widget>[
-            Icon(Icons.add, size: 30),
-            Icon(Icons.list, size: 30),
-            Icon(Icons.compare_arrows, size: 30),
-          ],
-          onTap: (index) {
-            //Handle button tap
-          },
+          ),
+        ],
+      ),
+      // bottomNavigationBar: BottomNavigationBar(),
+    );
+  }
+}
+
+// Bottom Navigation
+class BottomNavigationBar extends StatelessWidget {
+  const BottomNavigationBar({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CurvedNavigationBar(
+      backgroundColor: Color(0xFF2196F3),
+      items: <Widget>[
+        Icon(Icons.add, size: 30),
+        Icon(Icons.list, size: 30),
+        Icon(Icons.compare_arrows, size: 30),
+      ],
+      onTap: (index) {
+        //Handle button tap
+      },
+    );
+  }
+}
+
+// Tabs Section
+class CreateTab extends StatelessWidget {
+  CreateTab({
+    this.tabName,
+  });
+
+  final String tabName;
+  @override
+  Widget build(BuildContext context) {
+    return Tab(
+      child: Text(
+        tabName,
+        style: TextStyle(
+          fontFamily: 'Varela',
+          fontSize: 20,
         ),
       ),
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(StringProperty('tabName', tabName));
   }
 }
