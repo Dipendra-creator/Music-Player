@@ -1,7 +1,11 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+// import 'package:just_audio/just_audio.dart';
+import 'package:smash_media/pages/music_list.dart';
+import './pages/songs_page.dart';
+import 'package:provider/provider.dart';
 import 'package:smash_media/pages/songs_page.dart';
 
 void main() {
@@ -13,12 +17,14 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage>
-    with SingleTickerProviderStateMixin {
+class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Home(),
+    return ChangeNotifierProvider<DataListClass>(
+      create: (context) => DataListClass(),
+      child: MaterialApp(
+        home: Home(),
+      ),
     );
   }
 }
@@ -37,6 +43,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     _tabController = TabController(length: 4, vsync: this);
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,6 +57,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             print('Search');
           },
         ),
+
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.queue_music, size: 35, color: Colors.black45),
@@ -59,12 +67,14 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           ),
         ],
       ),
+
       body: ListView(
         padding: EdgeInsets.only(left: 20.0),
         children: <Widget>[
           SizedBox(
             height: 15,
           ),
+
           Text(
             'Browse',
             style: TextStyle(
@@ -74,6 +84,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               color: Colors.black45,
             ),
           ),
+
           SizedBox(
             height: 15,
           ),
@@ -82,7 +93,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           TabBar(
             controller: _tabController,
             indicatorColor: Colors.transparent,
-            labelColor: Colors.blueAccent,
+            labelColor: Color(0xFFFF9544),
             isScrollable: true,
             labelPadding: EdgeInsets.only(right: 45),
             unselectedLabelColor: Color(0xFFCDCDCD),
@@ -93,6 +104,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               CreateTab(tabName: 'Downloaded'),
             ],
           ),
+
           Container(
             height: MediaQuery.of(context).size.height - 50,
             width: double.infinity,
@@ -106,31 +118,93 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               ],
             ),
           ),
+
         ],
       ),
-      // bottomNavigationBar: BottomNavigationBar(),
+
+      bottomNavigationBar: SizedBox(
+        height: 150,
+        child: bottomPlayer(),
+      )
     );
   }
 }
 
-// Bottom Navigation
-class BottomNavigationBar extends StatelessWidget {
-  const BottomNavigationBar({
+class bottomPlayer extends StatelessWidget {
+  const bottomPlayer({
     Key key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return CurvedNavigationBar(
-      backgroundColor: Color(0xFF2196F3),
-      items: <Widget>[
-        Icon(Icons.add, size: 30),
-        Icon(Icons.list, size: 30),
-        Icon(Icons.compare_arrows, size: 30),
-      ],
-      onTap: (index) {
-        //Handle button tap
-      },
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Color(0x55212121),
+            blurRadius: 8,
+          ),
+        ],
+      ),
+      child: Column(
+        children: <Widget>[
+          Slider.adaptive(
+            activeColor: Color(0xFFFF9544),
+            inactiveColor: Color(0xFFFFE6D9),
+            value: 0,
+            onChanged: (value) {},
+
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8, left: 0, right: 0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  height: 60,
+                  width: 60,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    image: DecorationImage(
+                      image: NetworkImage(Provider.of<DataListClass>(context).data.currentImage),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      Provider.of<DataListClass>(context).data.currentTitle,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 5.0,),
+                    Text(
+                      Provider.of<DataListClass>(context).data.currentSinger,
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+                IconButton(
+                  icon: Icon(Provider.of<DataListClass>(context).data.btnIcon),
+                  onPressed: () {
+
+                  },
+                  iconSize: 42,
+                  color: Color(0xFFFF9544),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }
