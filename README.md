@@ -1,4 +1,4 @@
-# smash_media
+# Music-Player
 
 A new Flutter project.
 
