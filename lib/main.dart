@@ -1,8 +1,8 @@
+// import 'package:audioplayers/audioplayers.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-// import 'package:just_audio/just_audio.dart';
 import 'package:smash_media/pages/music_list.dart';
 import './pages/songs_page.dart';
 import 'package:provider/provider.dart';
@@ -123,7 +123,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       ),
 
       bottomNavigationBar: SizedBox(
-        height: 150,
+        height: 120,
         child: bottomPlayer(),
       )
     );
@@ -131,10 +131,16 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 }
 
 class bottomPlayer extends StatelessWidget {
-  const bottomPlayer({
-    Key key,
-  }) : super(key: key);
+  // const bottomPlayer({
+  //   Key key,
+  // }) : super(key: key);
 
+  // void playOrPause(int count) {
+  //   if (Provider.of<DataListClass>(context).data.currentIsPlaying) {
+  //
+  //   }
+  // }
+  // AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -195,7 +201,23 @@ class bottomPlayer extends StatelessWidget {
                 IconButton(
                   icon: Icon(Provider.of<DataListClass>(context).data.btnIcon),
                   onPressed: () {
-
+                    {
+                      print(Provider.of<DataListClass>(context, listen: false)
+                          .data
+                          .isPlaying);
+                    }
+                    if (Provider.of<DataListClass>(context, listen: false).data.isPlaying) {
+                      audioPlayer.pause();
+                      Provider.of<DataListClass>(context, listen: false).updateData(
+                          currentIsPlaying: false
+                      );
+                    }
+                    else {
+                      audioPlayer.resume();
+                      Provider.of<DataListClass>(context, listen: false).updateData(
+                          currentIsPlaying: true
+                      );
+                    }
                   },
                   iconSize: 42,
                   color: Color(0xFFFF9544),

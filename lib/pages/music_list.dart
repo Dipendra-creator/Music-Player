@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -83,6 +84,8 @@ List musicList = [
   }
 ];
 
+AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
+
 class Data {
 
   String currentTitle;
@@ -112,7 +115,15 @@ class DataListClass extends ChangeNotifier{
     isPlaying: false,
     );
 
-  void updateData(String currentTitle, String currentUrl, String currentImage, String currentSinger, IconData currentBtnIcon, bool currentIsPlaying) {
+  void updateData(
+      {
+        String currentTitle,
+        String currentUrl,
+        String currentImage,
+        String currentSinger,
+        IconData currentBtnIcon,
+        bool currentIsPlaying,
+      }) {
     data = Data(
       currentTitle: currentTitle,
       currentImage: currentImage,

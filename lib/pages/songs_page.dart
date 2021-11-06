@@ -13,30 +13,41 @@ class SongsPage extends StatefulWidget {
 class _SongsPageState extends State<SongsPage> {
 
   // Audio Player
+  Duration duration = new Duration();
+  Duration position = new Duration();
 
-  AudioPlayer audioPlayer = new AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
   bool isPlaying = false;
   String currentSong = "";
 
+
   void playMusic(String url) async {
     if (isPlaying && currentSong != null) {
-      audioPlayer.pause();
+      print("isPlaying is True \n currentSong is currentUrl");
+      audioPlayer.stop();
       int result = await audioPlayer.play(url);
+      print(result);
       if (result == 1) {
         setState(() {
           currentSong = url;
         });
       }
-      else if (!isPlaying) {
-        int result = await audioPlayer.play(url);
-        if(result == 1) {
-          setState(() {
-            isPlaying = true;
-          });
-        }
+    }
+    else if (!isPlaying) {
+      print("isPlaying is False");
+      int result = await audioPlayer.play(url);
+      if(result == 1) {
+        setState(() {
+          isPlaying = true;
+        });
+        // {print("isPlaying is not true condition mai $isPlaying");}
+        Provider.of<DataListClass>(context, listen: false).updateData(
+          currentIsPlaying: isPlaying
+        );
+        // {print("isPlaying is not true condition mai ${Provider.of<DataListClass>(context, listen: false).data.isPlaying}");}
       }
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -78,15 +89,18 @@ class _SongsPageState extends State<SongsPage> {
                           String currentSinger = musicList[index]['singer'];
                           IconData currentBtnIcon = Icons.play_arrow;
                           bool currentIsPlaying = false;
-
-                          playMusic("https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3");
+                          {print(currentUrl);}
+                          // audio.play(currentUrl);
+                          {print("playMusic Start");}
+                          playMusic(currentUrl);
+                          {print("playMusic End");}
                           Provider.of<DataListClass>(context, listen: false).updateData(
-                            currentTitle,
-                            currentUrl,
-                            currentImage,
-                            currentSinger,
-                            currentBtnIcon,
-                            currentIsPlaying,
+                            currentTitle: currentTitle,
+                            currentSinger: currentSinger,
+                            currentUrl: currentUrl,
+                            currentImage: currentImage,
+                            currentBtnIcon: currentBtnIcon,
+                            currentIsPlaying: isPlaying
                           );
                         },
                         title: musicList[index]['title'],
@@ -104,6 +118,7 @@ class _SongsPageState extends State<SongsPage> {
     );
   }
 }
+
 
 Widget customListTile({String title, String singer, String cover, onTap}) {
   return InkWell(
