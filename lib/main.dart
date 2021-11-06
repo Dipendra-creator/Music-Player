@@ -131,16 +131,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 }
 
 class bottomPlayer extends StatelessWidget {
-  // const bottomPlayer({
-  //   Key key,
-  // }) : super(key: key);
-
-  // void playOrPause(int count) {
-  //   if (Provider.of<DataListClass>(context).data.currentIsPlaying) {
-  //
-  //   }
-  // }
-  // AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
+  // IconData icon = Icons.pause;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -200,6 +191,7 @@ class bottomPlayer extends StatelessWidget {
                 ),
                 IconButton(
                   icon: Icon(Provider.of<DataListClass>(context).data.btnIcon),
+
                   onPressed: () {
                     {
                       print(Provider.of<DataListClass>(context, listen: false)
@@ -209,12 +201,22 @@ class bottomPlayer extends StatelessWidget {
                     if (Provider.of<DataListClass>(context, listen: false).data.isPlaying) {
                       audioPlayer.pause();
                       Provider.of<DataListClass>(context, listen: false).updateData(
-                          currentIsPlaying: false
+                        currentBtnIcon: Icons.play_arrow,
+                        currentUrl: Provider.of<DataListClass>(context, listen: false).data.currentUrl,
+                        currentSinger: Provider.of<DataListClass>(context, listen: false).data.currentSinger,
+                        currentTitle: Provider.of<DataListClass>(context, listen: false).data.currentTitle,
+                        currentImage: Provider.of<DataListClass>(context, listen: false).data.currentImage,
+                        currentIsPlaying: false
                       );
                     }
                     else {
                       audioPlayer.resume();
                       Provider.of<DataListClass>(context, listen: false).updateData(
+                          currentBtnIcon: Icons.pause,
+                          currentUrl: Provider.of<DataListClass>(context, listen: false).data.currentUrl,
+                          currentSinger: Provider.of<DataListClass>(context, listen: false).data.currentSinger,
+                          currentTitle: Provider.of<DataListClass>(context, listen: false).data.currentTitle,
+                          currentImage: Provider.of<DataListClass>(context, listen: false).data.currentImage,
                           currentIsPlaying: true
                       );
                     }

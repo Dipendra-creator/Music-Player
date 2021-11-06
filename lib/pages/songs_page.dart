@@ -41,6 +41,11 @@ class _SongsPageState extends State<SongsPage> {
         });
         // {print("isPlaying is not true condition mai $isPlaying");}
         Provider.of<DataListClass>(context, listen: false).updateData(
+          currentBtnIcon: Icons.pause,
+          currentUrl: Provider.of<DataListClass>(context, listen: false).data.currentUrl,
+          currentSinger: Provider.of<DataListClass>(context, listen: false).data.currentSinger,
+          currentTitle: Provider.of<DataListClass>(context, listen: false).data.currentTitle,
+          currentImage: Provider.of<DataListClass>(context, listen: false).data.currentImage,
           currentIsPlaying: isPlaying
         );
         // {print("isPlaying is not true condition mai ${Provider.of<DataListClass>(context, listen: false).data.isPlaying}");}
@@ -87,7 +92,7 @@ class _SongsPageState extends State<SongsPage> {
                           String currentUrl = musicList[index]['url'];
                           String currentImage = musicList[index]['cover'];
                           String currentSinger = musicList[index]['singer'];
-                          IconData currentBtnIcon = Icons.play_arrow;
+                          IconData currentBtnIcon = Icons.pause;
                           bool currentIsPlaying = false;
                           {print(currentUrl);}
                           // audio.play(currentUrl);
