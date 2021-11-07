@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -8,7 +10,7 @@ List musicList = [
     'title': "Tech House vibes",
     'singer': "Alejandro Magaña",
     'cover': "https://i1.sndcdn.com/artworks-kI4aED2cdGKItyrc-1GpyCw-t500x500.jpg",
-    'url': "https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3",
+    'url': "https://drive.google.com/uc?id=1dpR_SGNKq1el4LyI6I6Etd8I7dm6VJrt&export=download",
   },
   {
     'title': "Tech House vibes",
@@ -86,6 +88,7 @@ List musicList = [
 
 AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
 
+
 class Data {
 
   String currentTitle;
@@ -94,6 +97,8 @@ class Data {
   String currentSinger;
   IconData btnIcon = Icons.play_arrow;
   bool isPlaying = false;
+  Duration duration = new Duration();
+  Duration position = new Duration();
 
   Data({
     this.currentImage,
@@ -102,6 +107,8 @@ class Data {
     this.currentTitle,
     this.btnIcon,
     this.isPlaying,
+    this.duration,
+    this.position,
   });
 }
 
@@ -113,6 +120,8 @@ class DataListClass extends ChangeNotifier{
     currentSinger: musicList[0]['singer'],
     btnIcon: Icons.play_arrow,
     isPlaying: false,
+    duration: Duration(seconds: 0),
+    position: Duration(days: 0)
     );
 
   void updateData(
@@ -123,6 +132,8 @@ class DataListClass extends ChangeNotifier{
         String currentSinger,
         IconData currentBtnIcon,
         bool currentIsPlaying,
+        Duration duration,
+        Duration position
       }) {
     data = Data(
       currentTitle: currentTitle,
@@ -130,7 +141,9 @@ class DataListClass extends ChangeNotifier{
       currentUrl: currentUrl,
       currentSinger: currentSinger,
       btnIcon: currentBtnIcon,
-      isPlaying: currentIsPlaying
+      isPlaying: currentIsPlaying,
+      duration: duration,
+      position: position
     );
     notifyListeners();
   }

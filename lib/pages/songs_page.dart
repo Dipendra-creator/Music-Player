@@ -12,17 +12,12 @@ class SongsPage extends StatefulWidget {
 
 class _SongsPageState extends State<SongsPage> {
 
-  // Audio Player
-  Duration duration = new Duration();
-  Duration position = new Duration();
-
   bool isPlaying = false;
   String currentSong = "";
 
 
   void playMusic(String url) async {
     if (isPlaying && currentSong != null) {
-      print("isPlaying is True \n currentSong is currentUrl");
       audioPlayer.stop();
       int result = await audioPlayer.play(url);
       print(result);
@@ -33,24 +28,47 @@ class _SongsPageState extends State<SongsPage> {
       }
     }
     else if (!isPlaying) {
-      print("isPlaying is False");
       int result = await audioPlayer.play(url);
       if(result == 1) {
         setState(() {
           isPlaying = true;
         });
-        // {print("isPlaying is not true condition mai $isPlaying");}
         Provider.of<DataListClass>(context, listen: false).updateData(
           currentBtnIcon: Icons.pause,
           currentUrl: Provider.of<DataListClass>(context, listen: false).data.currentUrl,
           currentSinger: Provider.of<DataListClass>(context, listen: false).data.currentSinger,
           currentTitle: Provider.of<DataListClass>(context, listen: false).data.currentTitle,
           currentImage: Provider.of<DataListClass>(context, listen: false).data.currentImage,
-          currentIsPlaying: isPlaying
+          currentIsPlaying: isPlaying,
+          duration: Duration(seconds: 0),
+          position: Duration(seconds: 0)
         );
-        // {print("isPlaying is not true condition mai ${Provider.of<DataListClass>(context, listen: false).data.isPlaying}");}
       }
     }
+    audioPlayer.onDurationChanged.listen((event) {
+      Provider.of<DataListClass>(context, listen: false).updateData(
+        currentBtnIcon: Provider.of<DataListClass>(context, listen: false).data.btnIcon,
+        currentUrl: Provider.of<DataListClass>(context, listen: false).data.currentUrl,
+        currentSinger: Provider.of<DataListClass>(context, listen: false).data.currentSinger,
+        currentTitle: Provider.of<DataListClass>(context, listen: false).data.currentTitle,
+        currentImage: Provider.of<DataListClass>(context, listen: false).data.currentImage,
+        currentIsPlaying: Provider.of<DataListClass>(context, listen: false).data.isPlaying,
+        duration: event,
+        position: Provider.of<DataListClass>(context, listen: false).data.position,
+      );
+    });
+    audioPlayer.onAudioPositionChanged.listen((event) {
+      Provider.of<DataListClass>(context, listen: false).updateData(
+        currentBtnIcon: Provider.of<DataListClass>(context, listen: false).data.btnIcon,
+        currentUrl: Provider.of<DataListClass>(context, listen: false).data.currentUrl,
+        currentSinger: Provider.of<DataListClass>(context, listen: false).data.currentSinger,
+        currentTitle: Provider.of<DataListClass>(context, listen: false).data.currentTitle,
+        currentImage: Provider.of<DataListClass>(context, listen: false).data.currentImage,
+        currentIsPlaying: Provider.of<DataListClass>(context, listen: false).data.isPlaying,
+        duration: Provider.of<DataListClass>(context, listen: false).data.duration,
+        position: event,
+      );
+    });
   }
 
 
@@ -64,7 +82,6 @@ class _SongsPageState extends State<SongsPage> {
             height: 15,
           ),
           Container(
-            // padding: EdgeInsets.only(right: 15),
             width: MediaQuery.of(context).size.width - 20,
             height: MediaQuery.of(context).size.height - 50,
             child: SingleChildScrollView(
@@ -105,7 +122,9 @@ class _SongsPageState extends State<SongsPage> {
                             currentUrl: currentUrl,
                             currentImage: currentImage,
                             currentBtnIcon: currentBtnIcon,
-                            currentIsPlaying: isPlaying
+                            currentIsPlaying: isPlaying,
+                            duration: Duration(seconds: 0),
+                            position: Duration(seconds: 0)
                           );
                         },
                         title: musicList[index]['title'],

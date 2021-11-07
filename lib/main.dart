@@ -43,90 +43,81 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     _tabController = TabController(length: 4, vsync: this);
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.search, size: 35, color: Colors.black45),
-          onPressed: () {
-            print('Search');
-          },
-        ),
-
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.queue_music, size: 35, color: Colors.black45),
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          centerTitle: true,
+          leading: IconButton(
+            icon: Icon(Icons.search, size: 35, color: Colors.black45),
             onPressed: () {
-              print('Music Queue');
+              print('Search');
             },
           ),
-        ],
-      ),
-
-      body: ListView(
-        padding: EdgeInsets.only(left: 20.0),
-        children: <Widget>[
-          SizedBox(
-            height: 15,
-          ),
-
-          Text(
-            'Browse',
-            style: TextStyle(
-              fontFamily: 'Varela',
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-              color: Colors.black45,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.queue_music, size: 35, color: Colors.black45),
+              onPressed: () {
+                print('Music Queue');
+              },
             ),
-          ),
+          ],
+        ),
+        body: ListView(
+          padding: EdgeInsets.only(left: 20.0),
+          children: <Widget>[
+            SizedBox(
+              height: 15,
+            ),
+            Text(
+              'Browse',
+              style: TextStyle(
+                fontFamily: 'Varela',
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+                color: Colors.black45,
+              ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
 
-          SizedBox(
-            height: 15,
-          ),
-
-          /*TODO: TabBar */
-          TabBar(
-            controller: _tabController,
-            indicatorColor: Colors.transparent,
-            labelColor: Color(0xFFFF9544),
-            isScrollable: true,
-            labelPadding: EdgeInsets.only(right: 45),
-            unselectedLabelColor: Color(0xFFCDCDCD),
-            tabs: [
-              CreateTab(tabName: 'Songs'),
-              CreateTab(tabName: 'Playlist'),
-              CreateTab(tabName: 'Podcast'),
-              CreateTab(tabName: 'Downloaded'),
-            ],
-          ),
-
-          Container(
-            height: MediaQuery.of(context).size.height - 50,
-            width: double.infinity,
-            child: TabBarView(
+            /*TODO: TabBar */
+            TabBar(
               controller: _tabController,
-              children: [
-                SongsPage(),
-                SongsPage(),
-                SongsPage(),
-                SongsPage(),
+              indicatorColor: Colors.transparent,
+              labelColor: Color(0xFFFF9544),
+              isScrollable: true,
+              labelPadding: EdgeInsets.only(right: 45),
+              unselectedLabelColor: Color(0xFFCDCDCD),
+              tabs: [
+                CreateTab(tabName: 'Songs'),
+                CreateTab(tabName: 'Playlist'),
+                CreateTab(tabName: 'Podcast'),
+                CreateTab(tabName: 'Downloaded'),
               ],
             ),
-          ),
-
-        ],
-      ),
-
-      bottomNavigationBar: SizedBox(
-        height: 120,
-        child: bottomPlayer(),
-      )
-    );
+            Container(
+              height: MediaQuery.of(context).size.height - 50,
+              width: double.infinity,
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  SongsPage(),
+                  SongsPage(),
+                  SongsPage(),
+                  SongsPage(),
+                ],
+              ),
+            ),
+          ],
+        ),
+        bottomNavigationBar: SizedBox(
+          height: 120,
+          child: bottomPlayer(),
+        ));
   }
 }
 
@@ -146,12 +137,27 @@ class bottomPlayer extends StatelessWidget {
       ),
       child: Column(
         children: <Widget>[
+
           Slider.adaptive(
             activeColor: Color(0xFFFF9544),
             inactiveColor: Color(0xFFFFE6D9),
-            value: 0,
-            onChanged: (value) {},
 
+            value: Provider.of<DataListClass>(context)
+                .data
+                .position
+                .inSeconds
+                .toDouble(),
+            min: 0.0,
+            max: Provider.of<DataListClass>(context)
+                .data
+                .duration
+                .inSeconds
+                .toDouble(),
+            onChanged: (value) {
+              {
+                // Provider.of<DataListClass>(context).updateData()
+              }
+            },
           ),
           Padding(
             padding: const EdgeInsets.only(bottom: 8, left: 0, right: 0),
@@ -164,7 +170,9 @@ class bottomPlayer extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     image: DecorationImage(
-                      image: NetworkImage(Provider.of<DataListClass>(context).data.currentImage),
+                      image: NetworkImage(Provider.of<DataListClass>(context)
+                          .data
+                          .currentImage),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -179,7 +187,9 @@ class bottomPlayer extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    SizedBox(height: 5.0,),
+                    SizedBox(
+                      height: 5.0,
+                    ),
                     Text(
                       Provider.of<DataListClass>(context).data.currentSinger,
                       style: TextStyle(
@@ -191,34 +201,62 @@ class bottomPlayer extends StatelessWidget {
                 ),
                 IconButton(
                   icon: Icon(Provider.of<DataListClass>(context).data.btnIcon),
-
                   onPressed: () {
                     {
                       print(Provider.of<DataListClass>(context, listen: false)
                           .data
                           .isPlaying);
                     }
-                    if (Provider.of<DataListClass>(context, listen: false).data.isPlaying) {
+                    if (Provider.of<DataListClass>(context, listen: false)
+                        .data
+                        .isPlaying) {
                       audioPlayer.pause();
-                      Provider.of<DataListClass>(context, listen: false).updateData(
-                        currentBtnIcon: Icons.play_arrow,
-                        currentUrl: Provider.of<DataListClass>(context, listen: false).data.currentUrl,
-                        currentSinger: Provider.of<DataListClass>(context, listen: false).data.currentSinger,
-                        currentTitle: Provider.of<DataListClass>(context, listen: false).data.currentTitle,
-                        currentImage: Provider.of<DataListClass>(context, listen: false).data.currentImage,
-                        currentIsPlaying: false
-                      );
-                    }
-                    else {
+                      Provider.of<DataListClass>(context, listen: false)
+                          .updateData(
+                              currentBtnIcon: Icons.play_arrow,
+                              currentUrl: Provider.of<DataListClass>(context,
+                                      listen: false)
+                                  .data
+                                  .currentUrl,
+                              currentSinger: Provider.of<
+                                      DataListClass>(context, listen: false)
+                                  .data
+                                  .currentSinger,
+                              currentTitle:
+                                  Provider
+                                          .of<DataListClass>(context,
+                                              listen: false)
+                                      .data
+                                      .currentTitle,
+                              currentImage: Provider.of<DataListClass>(context,
+                                      listen: false)
+                                  .data
+                                  .currentImage,
+                              currentIsPlaying: false);
+                    } else {
                       audioPlayer.resume();
-                      Provider.of<DataListClass>(context, listen: false).updateData(
-                          currentBtnIcon: Icons.pause,
-                          currentUrl: Provider.of<DataListClass>(context, listen: false).data.currentUrl,
-                          currentSinger: Provider.of<DataListClass>(context, listen: false).data.currentSinger,
-                          currentTitle: Provider.of<DataListClass>(context, listen: false).data.currentTitle,
-                          currentImage: Provider.of<DataListClass>(context, listen: false).data.currentImage,
-                          currentIsPlaying: true
-                      );
+                      Provider.of<DataListClass>(context, listen: false)
+                          .updateData(
+                              currentBtnIcon: Icons.pause,
+                              currentUrl: Provider.of<DataListClass>(context,
+                                      listen: false)
+                                  .data
+                                  .currentUrl,
+                              currentSinger: Provider.of<
+                                      DataListClass>(context, listen: false)
+                                  .data
+                                  .currentSinger,
+                              currentTitle:
+                                  Provider
+                                          .of<DataListClass>(context,
+                                              listen: false)
+                                      .data
+                                      .currentTitle,
+                              currentImage: Provider.of<DataListClass>(context,
+                                      listen: false)
+                                  .data
+                                  .currentImage,
+                              currentIsPlaying: true);
                     }
                   },
                   iconSize: 42,
