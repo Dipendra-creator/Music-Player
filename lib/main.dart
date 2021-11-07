@@ -122,7 +122,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 }
 
 class bottomPlayer extends StatelessWidget {
-  // IconData icon = Icons.pause;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -137,11 +136,9 @@ class bottomPlayer extends StatelessWidget {
       ),
       child: Column(
         children: <Widget>[
-
           Slider.adaptive(
             activeColor: Color(0xFFFF9544),
             inactiveColor: Color(0xFFFFE6D9),
-
             value: Provider.of<DataListClass>(context)
                 .data
                 .position
@@ -213,50 +210,64 @@ class bottomPlayer extends StatelessWidget {
                       audioPlayer.pause();
                       Provider.of<DataListClass>(context, listen: false)
                           .updateData(
-                              currentBtnIcon: Icons.play_arrow,
-                              currentUrl: Provider.of<DataListClass>(context,
-                                      listen: false)
-                                  .data
-                                  .currentUrl,
-                              currentSinger: Provider.of<
-                                      DataListClass>(context, listen: false)
-                                  .data
-                                  .currentSinger,
-                              currentTitle:
-                                  Provider
-                                          .of<DataListClass>(context,
-                                              listen: false)
-                                      .data
-                                      .currentTitle,
-                              currentImage: Provider.of<DataListClass>(context,
-                                      listen: false)
-                                  .data
-                                  .currentImage,
-                              currentIsPlaying: false);
+                        currentBtnIcon: Icons.play_arrow,
+                        currentUrl:
+                            Provider.of<DataListClass>(context, listen: false)
+                                .data
+                                .currentUrl,
+                        currentSinger:
+                            Provider.of<DataListClass>(context, listen: false)
+                                .data
+                                .currentSinger,
+                        currentTitle:
+                            Provider.of<DataListClass>(context, listen: false)
+                                .data
+                                .currentTitle,
+                        currentImage:
+                            Provider.of<DataListClass>(context, listen: false)
+                                .data
+                                .currentImage,
+                        currentIsPlaying: false,
+                        duration:
+                            Provider.of<DataListClass>(context, listen: false)
+                                .data
+                                .duration,
+                        position:
+                            Provider.of<DataListClass>(context, listen: false)
+                                .data
+                                .position,
+                      );
                     } else {
                       audioPlayer.resume();
                       Provider.of<DataListClass>(context, listen: false)
                           .updateData(
-                              currentBtnIcon: Icons.pause,
-                              currentUrl: Provider.of<DataListClass>(context,
-                                      listen: false)
-                                  .data
-                                  .currentUrl,
-                              currentSinger: Provider.of<
-                                      DataListClass>(context, listen: false)
-                                  .data
-                                  .currentSinger,
-                              currentTitle:
-                                  Provider
-                                          .of<DataListClass>(context,
-                                              listen: false)
-                                      .data
-                                      .currentTitle,
-                              currentImage: Provider.of<DataListClass>(context,
-                                      listen: false)
-                                  .data
-                                  .currentImage,
-                              currentIsPlaying: true);
+                        currentBtnIcon: Icons.pause,
+                        currentUrl:
+                            Provider.of<DataListClass>(context, listen: false)
+                                .data
+                                .currentUrl,
+                        currentSinger:
+                            Provider.of<DataListClass>(context, listen: false)
+                                .data
+                                .currentSinger,
+                        currentTitle:
+                            Provider.of<DataListClass>(context, listen: false)
+                                .data
+                                .currentTitle,
+                        currentImage:
+                            Provider.of<DataListClass>(context, listen: false)
+                                .data
+                                .currentImage,
+                        currentIsPlaying: true,
+                        duration:
+                            Provider.of<DataListClass>(context, listen: false)
+                                .data
+                                .duration,
+                        position:
+                            Provider.of<DataListClass>(context, listen: false)
+                                .data
+                                .position,
+                      );
                     }
                   },
                   iconSize: 42,
