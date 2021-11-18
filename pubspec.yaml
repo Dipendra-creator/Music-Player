@@ -12,7 +12,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-
   cupertino_icons: ^1.0.2
   audio_service: ^0.18.0
   just_audio: ^0.9.12
@@ -21,6 +20,8 @@ dependencies:
   audioplayers: ^0.20.1
   path_provider: ^2.0.1
   audio_session: ^0.1.6
+  permission_handler: ^8.3.0
+  shared_preferences: ^2.0.8
 
 #    path: ../
 

@@ -1,5 +1,4 @@
 // import 'package:audioplayers/audioplayers.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +6,8 @@ import 'package:smash_media/pages/music_list.dart';
 import './pages/songs_page.dart';
 import 'package:provider/provider.dart';
 import 'package:smash_media/pages/songs_page.dart';
-
+import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 void main() {
   runApp(MyHomePage());
 }
@@ -42,6 +42,41 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
   }
+   askStoragePermission() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool storageAlreadyDeniedOnce = prefs.getBool('storageAlreadyDeniedOnce') ?? false;
+    if (storageAlreadyDeniedOnce) {
+      return showModalBottomSheet<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            height: 200,
+            color: Colors.amber,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  // TODO: Add Styling
+                  const Text('Go to settings and enable File Storage Permissions'),
+                  ElevatedButton(onPressed: openAppSettings, child: const Text('Okay')),
+                  ElevatedButton(onPressed: () => Navigator.pop(context), child: Text("Cancel"))
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    }
+    else if (await Permission.storage.status.isDenied){
+      if (!(await Permission.storage.request().isGranted)){
+        await prefs.setBool('storageAlreadyDeniedOnce', true);
+      }
+      else if (await Permission.storage.isGranted) {
+        print("Acquired");
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +87,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           centerTitle: true,
           leading: IconButton(
             icon: Icon(Icons.search, size: 35, color: Colors.black45),
-            onPressed: () {
-              print('Search');
-            },
+            onPressed: askStoragePermission
           ),
           actions: <Widget>[
             IconButton(
@@ -229,11 +262,11 @@ class bottomPlayer extends StatelessWidget {
                                 .currentImage,
                         currentIsPlaying: false,
                         duration:
-                            Provider.of<DataListClass>(context, listen: false)
+                            Provider.of<DataListClass>(context,)
                                 .data
                                 .duration,
                         position:
-                            Provider.of<DataListClass>(context, listen: false)
+                           context.watch<DataListClass>()
                                 .data
                                 .position,
                       );
