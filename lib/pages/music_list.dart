@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 List musicList = [
   {
-    'title': "Tech House vibes",
+    'title': "Tech House vibes1",
     'singer': "Alejandro Magaña",
     'cover': "https://i1.sndcdn.com/artworks-kI4aED2cdGKItyrc-1GpyCw-t500x500.jpg",
     'url': "https://drive.google.com/uc?id=1dpR_SGNKq1el4LyI6I6Etd8I7dm6VJrt&export=download",
@@ -88,7 +88,6 @@ AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
 
 
 class Data {
-
   String currentTitle;
   String currentUrl;
   String currentImage;

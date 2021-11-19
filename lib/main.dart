@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:smash_media/pages/songs_page.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 void main() {
   runApp(MyHomePage());
 }
@@ -148,12 +149,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         ),
         bottomNavigationBar: SizedBox(
           height: 120,
-          child: bottomPlayer(),
+          child: BottomPlayer(),
         ));
   }
 }
 
-class bottomPlayer extends StatelessWidget {
+class BottomPlayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
