@@ -76,7 +76,7 @@ class _SongsPageState extends State<SongsPage> {
 
   @override
   Widget build(BuildContext context) {
-    Directory dir = Directory('/storage/emulated/0/Music');
+    Directory dir = Directory('/storage/emulated/0');
     String mp3Path = dir.toString();
     audioQuery.getSongs().then((value) => {
       value.forEach((element) {print(element);})
@@ -94,6 +94,8 @@ class _SongsPageState extends State<SongsPage> {
       if(path.endsWith('.mp3'))
         _songs.add(entity);
     }
+    //_songs[0].toString().substring(8, _songs[0].toString().length - 1)
+    print("real song string ${_songs[0].toString().substring(8, _songs[0].toString().length - 1)}");
     print(_songs);
     print(_songs.length);
     return Scaffold(
