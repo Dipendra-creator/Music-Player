@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:smash_media/pages/songs_page.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() {
   runApp(MyHomePage());
@@ -41,8 +42,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
+    askStoragePermission();
   }
-   askStoragePermission() async {
+   void askStoragePermission() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool storageAlreadyDeniedOnce = prefs.getBool('storageAlreadyDeniedOnce') ?? false;
     if (storageAlreadyDeniedOnce) {
@@ -86,8 +88,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           elevation: 0.0,
           centerTitle: true,
           leading: IconButton(
-            icon: Icon(Icons.search, size: 35, color: Colors.black45),
-            onPressed: askStoragePermission
+            icon: Icon(Icons.search, size: 35, color: Colors.black45)
           ),
           actions: <Widget>[
             IconButton(
@@ -190,6 +191,7 @@ class BottomPlayer extends StatelessWidget {
             },
           ),
           Padding(
+
             padding: const EdgeInsets.only(bottom: 8, left: 0, right: 0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -211,7 +213,7 @@ class BottomPlayer extends StatelessWidget {
                     Text(
                       Provider.of<DataListClass>(context).data.currentTitle,
                       style: TextStyle(
-                        fontSize: 16,
+                        // fontSize: ,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -222,7 +224,7 @@ class BottomPlayer extends StatelessWidget {
                       Provider.of<DataListClass>(context).data.currentSinger,
                       style: TextStyle(
                         color: Colors.grey,
-                        fontSize: 14,
+                        // fontSize: 14,
                       ),
                     ),
                   ],
