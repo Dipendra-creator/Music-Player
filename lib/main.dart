@@ -230,7 +230,7 @@ class BottomPlayer extends StatelessWidget {
                   ],
                 ),
                 IconButton(
-                  icon: Icon(Provider.of<DataListClass>(context).data.btnIcon),
+                  icon: Icon(Provider.of<DataListClass>(context, listen: false).data.btnIcon),
                   onPressed: () {
                     {
                       print(Provider.of<DataListClass>(context, listen: false)
@@ -262,11 +262,11 @@ class BottomPlayer extends StatelessWidget {
                                 .currentImage,
                         currentIsPlaying: false,
                         duration:
-                            Provider.of<DataListClass>(context,)
+                            Provider.of<DataListClass>(context, listen: false)
                                 .data
                                 .duration,
                         position:
-                           context.watch<DataListClass>()
+                           Provider.of<DataListClass>(context, listen: false)
                                 .data
                                 .position,
                       );
