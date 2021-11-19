@@ -1,10 +1,12 @@
+import 'dart:io';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 import 'music_list.dart';
-
+import 'package:flutter_audio_query/flutter_audio_query.dart';
 class SongsPage extends StatefulWidget {
   @override
   State<SongsPage> createState() => _SongsPageState();
@@ -70,10 +72,30 @@ class _SongsPageState extends State<SongsPage> {
       );
     });
   }
-
+  final FlutterAudioQuery audioQuery = FlutterAudioQuery();
 
   @override
   Widget build(BuildContext context) {
+    Directory dir = Directory('/storage/emulated/0/Music');
+    String mp3Path = dir.toString();
+    audioQuery.getSongs().then((value) => {
+      value.forEach((element) {print(element);})
+    });
+
+    print(mp3Path);
+
+    List<FileSystemEntity> _files;
+    List<FileSystemEntity> _songs = [];
+
+    _files = dir.listSync(recursive: true, followLinks: false);
+
+    for(FileSystemEntity entity in _files) {
+      String path = entity.path;
+      if(path.endsWith('.mp3'))
+        _songs.add(entity);
+    }
+    print(_songs);
+    print(_songs.length);
     return Scaffold(
       backgroundColor: Color(0xFFFCFAF8),
       body: ListView(
@@ -141,6 +163,7 @@ class _SongsPageState extends State<SongsPage> {
       ),
     );
   }
+
 }
 
 
