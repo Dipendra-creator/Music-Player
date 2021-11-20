@@ -72,7 +72,6 @@ class _SongsPageState extends State<SongsPage> {
   }
   // Collects information about all the music in the file storage
   final Future<List<SongInfo>> _songs = FlutterAudioQuery().getSongs();
-
   @override
   Widget build(BuildContext context) {
     // Directory dir = Directory('/storage/emulated/0/Music');
@@ -175,7 +174,6 @@ class _SongsPageState extends State<SongsPage> {
       ),
     );
   }
-
 }
 
 
