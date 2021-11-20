@@ -202,7 +202,9 @@ class BottomPlayer extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     image: DecorationImage(
-                      image: NetworkImage("https://w7.pngwing.com/pngs/710/955/png-transparent-vinyl-record-artwork-phonograph-record-compact-disc-lp-record-disc-jockey-symbol-miscellaneous-classical-music-sound.png"),
+                      image: NetworkImage(Provider.of<DataListClass>(context)
+                          .data
+                          .currentImage),
                       fit: BoxFit.cover,
                     ),
                   ),
