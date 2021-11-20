@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:smash_media/pages/music_list.dart';
 import './pages/songs_page.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +9,7 @@ import 'package:smash_media/pages/songs_page.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_search_bar/flutter_search_bar.dart';
 
 void main() {
   runApp(MyHomePage());
@@ -36,13 +38,44 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
+  SearchBar _searchBar;
   TabController _tabController;
+  FlutterAudioQuery _audioQuery;
+
+  AppBar buildAppBar(BuildContext context) {
+    return new AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        leading:IconButton(
+            icon: Icon(Icons.search, size: 35, color: Colors.black45),
+          onPressed: () {_searchBar.beginSearch(context);},
+        ),
+        actions: [IconButton(
+          icon: Icon(Icons.queue_music, size: 35, color: Colors.black45),
+          onPressed: () {
+            print('Music Queue');
+          },
+        )]
+    );
+  }
+  // TODO: Display the queries to screen and connected it to the audio player
+  void searchQuery(String query) async {
+    List<SongInfo> results = await _audioQuery.searchSongs(query: query);
+    print(results);
+  }
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
     askStoragePermission();
+    _tabController = TabController(length: 4, vsync: this);
+    _audioQuery = FlutterAudioQuery();
+    _searchBar = new SearchBar(
+        inBar: false,
+        setState: setState,
+        onSubmitted: searchQuery,
+        buildDefaultAppBar: buildAppBar
+    );
   }
    void askStoragePermission() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -83,22 +116,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0.0,
-          centerTitle: true,
-          leading: IconButton(
-            icon: Icon(Icons.search, size: 35, color: Colors.black45)
-          ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.queue_music, size: 35, color: Colors.black45),
-              onPressed: () {
-                print('Music Queue');
-              },
-            ),
-          ],
-        ),
+        appBar: _searchBar.build(context),
         body: ListView(
           padding: EdgeInsets.only(left: 20.0),
           children: <Widget>[
