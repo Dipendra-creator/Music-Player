@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'music_list.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
 
+List<SongInfo> songsList;
 class SongsPage extends StatefulWidget {
   @override
   State<SongsPage> createState() => _SongsPageState();
@@ -72,23 +73,8 @@ class _SongsPageState extends State<SongsPage> {
   }
   // Collects information about all the music in the file storage
   final Future<List<SongInfo>> _songs = FlutterAudioQuery().getSongs();
-
   @override
   Widget build(BuildContext context) {
-    // Directory dir = Directory('/storage/emulated/0/Music');
-    // String mp3Path = dir.toString();
-    // List<FileSystemEntity> _files;
-    // List<FileSystemEntity> _songs = [];
-    //
-    // _files = dir.listSync(recursive: true, followLinks: false);
-    //
-    // for(FileSystemEntity entity in _files) {
-    //   String path = entity.path;
-    //   if(path.endsWith('.mp3'))
-    //     _songs.add(entity);
-    // }
-    // print(_songs);
-    // print(_songs.length);
 
     return Scaffold(
       backgroundColor: Color(0xFFFCFAF8),
@@ -121,7 +107,7 @@ class _SongsPageState extends State<SongsPage> {
                     child: FutureBuilder<List<SongInfo>>(
                       future: _songs,
                       builder: (BuildContext context, AsyncSnapshot<List<SongInfo>> snapshot) {
-                        List<SongInfo> songsList;
+
                         if (snapshot.hasData) {
                           songsList = snapshot.data;
                         }
@@ -138,7 +124,7 @@ class _SongsPageState extends State<SongsPage> {
                           itemBuilder: (context, index) => customListTile(
                             onTap: () {
                               String currentTitle = songsList[index].title;
-                              String currentUrl = songsList[index].uri;
+                              String currentUrl = songsList[index].filePath;
                               String currentImage = songsList[index].albumArtwork;
                               String currentSinger = songsList[index].artist;
                               IconData currentBtnIcon = Icons.pause;
@@ -175,7 +161,6 @@ class _SongsPageState extends State<SongsPage> {
       ),
     );
   }
-
 }
 
 
@@ -200,25 +185,29 @@ Widget customListTile({String title, String artist, String albumArtwork, onTap})
             ),
           ),
           SizedBox(width: 10.0,),
-          Center(
-            child: Column(
-              children: <Widget>[
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
+          Expanded(
+            child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                ),
-                SizedBox(height: 5.0,),
-                Text(
-                  artist,
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 16,
+                  SizedBox(height: 5.0,),
+                  Text(
+                    artist,
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 16,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],
