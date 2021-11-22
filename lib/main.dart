@@ -50,8 +50,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             icon: Icon(Icons.search, size: 35, color: Colors.black45),
           onPressed: () {_searchBar.beginSearch(context);},
         ),
-        actions: [IconButton(
-          icon: Icon(Icons.queue_music, size: 35, color: Colors.black45),
+        actions: [IconButton(onPressed: () => {}, icon: Icon(Icons.refresh_rounded,  size: 35, color: Colors.black45)),
+          IconButton(icon: Icon(Icons.queue_music, size: 35, color: Colors.black45),
           onPressed: () {
             print('Music Queue');
           },
@@ -80,6 +80,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
    void askStoragePermission() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool storageAlreadyDeniedOnce = prefs.getBool('storageAlreadyDeniedOnce') ?? false;
+    print("Storage Permission: storageAlreadyDeniedOnce: " + storageAlreadyDeniedOnce.toString());
     if (storageAlreadyDeniedOnce) {
       return showModalBottomSheet<void>(
         context: context,
@@ -105,7 +106,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     }
     else if (await Permission.storage.status.isDenied){
       if (!(await Permission.storage.request().isGranted)){
-        await prefs.setBool('storageAlreadyDeniedOnce', true);
+        await prefs.setBool('storageAlreadyDeniedOnce', false);
       }
       else if (await Permission.storage.isGranted) {
         print("Acquired");

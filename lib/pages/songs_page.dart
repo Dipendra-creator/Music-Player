@@ -12,11 +12,13 @@ class SongsPage extends StatefulWidget {
 }
 
 class _SongsPageState extends State<SongsPage> {
+  @override
+  void initState() {
+    super.initState();
 
+  }
   bool isPlaying = false;
   String currentSong = "";
-
-
   void playMusic(String url) async {
     if (isPlaying && currentSong != null) {
       audioPlayer.stop();
@@ -110,6 +112,7 @@ class _SongsPageState extends State<SongsPage> {
 
                         if (snapshot.hasData) {
                           songsList = snapshot.data;
+                          print(snapshot.data);
                         }
                         else {
                           // Show a Progress Indicator until the data has been collected
@@ -131,9 +134,7 @@ class _SongsPageState extends State<SongsPage> {
                               // bool currentIsPlaying = false;
                                   {print(currentUrl);}
                               // audio.play(currentUrl);
-                                  {print("playMusic Start");}
                               playMusic(currentUrl);
-                              {print("playMusic End");}
                               Provider.of<DataListClass>(context, listen: false).updateData(
                                   currentTitle: currentTitle,
                                   currentSinger: currentSinger,
@@ -174,8 +175,8 @@ Widget customListTile({String title, String artist, String albumArtwork, onTap})
       child: Row(
         children: <Widget>[
           Container(
-            height: 80,
-            width: 80,
+            height: 90,
+            width: 90,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
                 image: DecorationImage(
@@ -184,7 +185,7 @@ Widget customListTile({String title, String artist, String albumArtwork, onTap})
               ),
             ),
           ),
-          SizedBox(width: 10.0,),
+          SizedBox(width: 10.0),
           Expanded(
             child: Container(
               child: Column(
@@ -194,11 +195,12 @@ Widget customListTile({String title, String artist, String albumArtwork, onTap})
                   Text(
                     title,
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  SizedBox(height: 5.0,),
+                  // Removed SizedBox to remove Overflow
+                  // SizedBox(height: 5.0),
                   Text(
                     artist,
                     style: TextStyle(
