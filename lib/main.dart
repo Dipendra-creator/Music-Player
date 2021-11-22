@@ -47,7 +47,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         elevation: 0,
         backgroundColor: Colors.transparent,
         leading:IconButton(
-            icon: Icon(Icons.search, size: 35, color: Colors.black45),
+          icon: Icon(Icons.search, size: 35, color: Colors.black45),
           onPressed: () {_searchBar.beginSearch(context);},
         ),
         actions: [IconButton(onPressed: () => {}, icon: Icon(Icons.refresh_rounded,  size: 35, color: Colors.black45)),
@@ -77,7 +77,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         buildDefaultAppBar: buildAppBar
     );
   }
-   void askStoragePermission() async {
+  void askStoragePermission() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool storageAlreadyDeniedOnce = prefs.getBool('storageAlreadyDeniedOnce') ?? false;
     print("Storage Permission: storageAlreadyDeniedOnce: " + storageAlreadyDeniedOnce.toString());
@@ -264,30 +264,30 @@ class BottomPlayer extends StatelessWidget {
                           .updateData(
                         currentBtnIcon: Icons.play_arrow,
                         currentUrl:
-                            Provider.of<DataListClass>(context, listen: false)
-                                .data
-                                .currentUrl,
+                        Provider.of<DataListClass>(context, listen: false)
+                            .data
+                            .currentUrl,
                         currentSinger:
-                            Provider.of<DataListClass>(context, listen: false)
-                                .data
-                                .currentSinger,
+                        Provider.of<DataListClass>(context, listen: false)
+                            .data
+                            .currentSinger,
                         currentTitle:
-                            Provider.of<DataListClass>(context, listen: false)
-                                .data
-                                .currentTitle,
+                        Provider.of<DataListClass>(context, listen: false)
+                            .data
+                            .currentTitle,
                         currentImage:
-                            Provider.of<DataListClass>(context, listen: false)
-                                .data
-                                .currentImage,
+                        Provider.of<DataListClass>(context, listen: false)
+                            .data
+                            .currentImage,
                         currentIsPlaying: false,
                         duration:
-                            Provider.of<DataListClass>(context, listen: false)
-                                .data
-                                .duration,
+                        Provider.of<DataListClass>(context, listen: false)
+                            .data
+                            .duration,
                         position:
-                           Provider.of<DataListClass>(context, listen: false)
-                                .data
-                                .position,
+                        Provider.of<DataListClass>(context, listen: false)
+                            .data
+                            .position,
                       );
                     } else {
                       audioPlayer.resume();
@@ -295,30 +295,30 @@ class BottomPlayer extends StatelessWidget {
                           .updateData(
                         currentBtnIcon: Icons.pause,
                         currentUrl:
-                            Provider.of<DataListClass>(context, listen: false)
-                                .data
-                                .currentUrl,
+                        Provider.of<DataListClass>(context, listen: false)
+                            .data
+                            .currentUrl,
                         currentSinger:
-                            Provider.of<DataListClass>(context, listen: false)
-                                .data
-                                .currentSinger,
+                        Provider.of<DataListClass>(context, listen: false)
+                            .data
+                            .currentSinger,
                         currentTitle:
-                            Provider.of<DataListClass>(context, listen: false)
-                                .data
-                                .currentTitle,
+                        Provider.of<DataListClass>(context, listen: false)
+                            .data
+                            .currentTitle,
                         currentImage:
-                            Provider.of<DataListClass>(context, listen: false)
-                                .data
-                                .currentImage,
+                        Provider.of<DataListClass>(context, listen: false)
+                            .data
+                            .currentImage,
                         currentIsPlaying: true,
                         duration:
-                            Provider.of<DataListClass>(context, listen: false)
-                                .data
-                                .duration,
+                        Provider.of<DataListClass>(context, listen: false)
+                            .data
+                            .duration,
                         position:
-                            Provider.of<DataListClass>(context, listen: false)
-                                .data
-                                .position,
+                        Provider.of<DataListClass>(context, listen: false)
+                            .data
+                            .position,
                       );
                     }
                   },

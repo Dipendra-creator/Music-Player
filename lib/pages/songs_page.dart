@@ -230,7 +230,7 @@ Widget musicCard({String title, String singer, String cover, onTap}) {
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage(cover),
+              image: cover != null ? FileImage(File(cover)) : AssetImage('assets/no_cover.png'),
               fit: BoxFit.cover,
             ),
             borderRadius: BorderRadius.only(
