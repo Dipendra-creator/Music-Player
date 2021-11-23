@@ -60,7 +60,6 @@ class DataListClass extends ChangeNotifier {
     data.isPlaying = currentIsPlaying;
     data.duration = duration;
     data.position = position;
-    data.audioQuery = flutterAudioQuery;
     // data = Data(
     //   currentTitle: currentTitle,
     //   currentImage: currentImage,
@@ -81,9 +80,9 @@ class DataListClass extends ChangeNotifier {
   }
 
   Future<void> updateSongs() async {
-    print("Gettings Songs");
     data.songs = await data.audioQuery.getSongs();
-    print("Gettings Songs Done");
+    print("US");
+    print(data.songs);
     return;
   }
 }

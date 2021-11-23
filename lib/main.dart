@@ -70,7 +70,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    // askStoragePermission();
+    askStoragePermission();
     _tabController = TabController(length: 4, vsync: this);
     _audioQuery = FlutterAudioQuery();
     _searchBar = new SearchBar(
@@ -124,7 +124,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         // Added Pull To Refresh
         body: RefreshIndicator(
           onRefresh: () {
+
             // Refreshes the songs list in case the user has added some new songs to device storage
+            Provider.of<DataListClass>(context, listen: false).updateAudioQuery();
+
+            print("Songs");
+            print(Provider.of<DataListClass>(context, listen: false).data.songs);
             return Provider.of<DataListClass>(context, listen: false).updateSongs();
           },
           child: ListView(

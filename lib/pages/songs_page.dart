@@ -109,7 +109,7 @@ class _SongsPageState extends State<SongsPage> {
 
   @override
   Widget build(BuildContext context) {
-    _songs = Provider.of<DataListClass>(context).updateSongs();
+    _songs = Provider.of<DataListClass>(context).data.audioQuery.getSongs();
     return Scaffold(
       backgroundColor: Color(0xFFFCFAF8),
       body: ListView(
