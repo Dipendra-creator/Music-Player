@@ -2,23 +2,30 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'music_list.dart';
+import '../models/music_list.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
 
 List<SongInfo> songsList;
+
 class SongsPage extends StatefulWidget {
   @override
   State<SongsPage> createState() => _SongsPageState();
 }
 
 class _SongsPageState extends State<SongsPage> {
+  _SongsPageState();
+
+  // Collects information about all the music in the file storage
+  Future<List<SongInfo>> _songs;
+
   @override
   void initState() {
     super.initState();
-
   }
+
   bool isPlaying = false;
   String currentSong = "";
+
   void playMusic(String url) async {
     if (isPlaying && currentSong != null) {
       audioPlayer.stop();
@@ -29,55 +36,80 @@ class _SongsPageState extends State<SongsPage> {
           currentSong = url;
         });
       }
-    }
-    else if (!isPlaying) {
+    } else if (!isPlaying) {
       int result = await audioPlayer.play(url);
-      if(result == 1) {
+      if (result == 1) {
         setState(() {
           isPlaying = true;
         });
         Provider.of<DataListClass>(context, listen: false).updateData(
-          currentBtnIcon: Icons.pause,
-          currentUrl: Provider.of<DataListClass>(context, listen: false).data.currentUrl,
-          currentSinger: Provider.of<DataListClass>(context, listen: false).data.currentSinger,
-          currentTitle: Provider.of<DataListClass>(context, listen: false).data.currentTitle,
-          currentImage: Provider.of<DataListClass>(context, listen: false).data.currentImage,
-          currentIsPlaying: isPlaying,
-          duration: Duration(seconds: 0),
-          position: Duration(seconds: 0)
-        );
+            currentBtnIcon: Icons.pause,
+            currentUrl: Provider.of<DataListClass>(context, listen: false)
+                .data
+                .currentUrl,
+            currentSinger: Provider.of<DataListClass>(context, listen: false)
+                .data
+                .currentSinger,
+            currentTitle: Provider.of<DataListClass>(context, listen: false)
+                .data
+                .currentTitle,
+            currentImage: Provider.of<DataListClass>(context, listen: false)
+                .data
+                .currentImage,
+            currentIsPlaying: isPlaying,
+            duration: Duration(seconds: 0),
+            position: Duration(seconds: 0));
       }
     }
     audioPlayer.onDurationChanged.listen((event) {
       Provider.of<DataListClass>(context, listen: false).updateData(
-        currentBtnIcon: Provider.of<DataListClass>(context, listen: false).data.btnIcon,
-        currentUrl: Provider.of<DataListClass>(context, listen: false).data.currentUrl,
-        currentSinger: Provider.of<DataListClass>(context, listen: false).data.currentSinger,
-        currentTitle: Provider.of<DataListClass>(context, listen: false).data.currentTitle,
-        currentImage: Provider.of<DataListClass>(context, listen: false).data.currentImage,
-        currentIsPlaying: Provider.of<DataListClass>(context, listen: false).data.isPlaying,
+        currentBtnIcon:
+            Provider.of<DataListClass>(context, listen: false).data.btnIcon,
+        currentUrl:
+            Provider.of<DataListClass>(context, listen: false).data.currentUrl,
+        currentSinger: Provider.of<DataListClass>(context, listen: false)
+            .data
+            .currentSinger,
+        currentTitle: Provider.of<DataListClass>(context, listen: false)
+            .data
+            .currentTitle,
+        currentImage: Provider.of<DataListClass>(context, listen: false)
+            .data
+            .currentImage,
+        currentIsPlaying:
+            Provider.of<DataListClass>(context, listen: false).data.isPlaying,
         duration: event,
-        position: Provider.of<DataListClass>(context, listen: false).data.position,
+        position:
+            Provider.of<DataListClass>(context, listen: false).data.position,
       );
     });
     audioPlayer.onAudioPositionChanged.listen((event) {
       Provider.of<DataListClass>(context, listen: false).updateData(
-        currentBtnIcon: Provider.of<DataListClass>(context, listen: false).data.btnIcon,
-        currentUrl: Provider.of<DataListClass>(context, listen: false).data.currentUrl,
-        currentSinger: Provider.of<DataListClass>(context, listen: false).data.currentSinger,
-        currentTitle: Provider.of<DataListClass>(context, listen: false).data.currentTitle,
-        currentImage: Provider.of<DataListClass>(context, listen: false).data.currentImage,
-        currentIsPlaying: Provider.of<DataListClass>(context, listen: false).data.isPlaying,
-        duration: Provider.of<DataListClass>(context, listen: false).data.duration,
+        currentBtnIcon:
+            Provider.of<DataListClass>(context, listen: false).data.btnIcon,
+        currentUrl:
+            Provider.of<DataListClass>(context, listen: false).data.currentUrl,
+        currentSinger: Provider.of<DataListClass>(context, listen: false)
+            .data
+            .currentSinger,
+        currentTitle: Provider.of<DataListClass>(context, listen: false)
+            .data
+            .currentTitle,
+        currentImage: Provider.of<DataListClass>(context, listen: false)
+            .data
+            .currentImage,
+        currentIsPlaying:
+            Provider.of<DataListClass>(context, listen: false).data.isPlaying,
+        duration:
+            Provider.of<DataListClass>(context, listen: false).data.duration,
         position: event,
       );
     });
   }
-  // Collects information about all the music in the file storage
-  final Future<List<SongInfo>> _songs = FlutterAudioQuery().getSongs();
+
   @override
   Widget build(BuildContext context) {
-
+    _songs = Provider.of<DataListClass>(context).updateSongs();
     return Scaffold(
       backgroundColor: Color(0xFFFCFAF8),
       body: ListView(
@@ -92,68 +124,72 @@ class _SongsPageState extends State<SongsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  // Removed Column Songs, since they were the same songs
+                  // shown on a different axis
+                  // SizedBox(
+                  //   height: 150,
+                  //   // width: 150,
+                  //   child: ListView.builder(
+                  //     itemCount: ,
+                  //     scrollDirection: Axis.horizontal,
+                  //     itemBuilder: (context, index) => musicCard(
+                  //       cover: musicList[index]['cover'],
+                  //     ),
+                  //   ),
+                  // ),
                   SizedBox(
-                    height: 150,
-                    // width: 150,
-                    child: ListView.builder(
-                        itemCount: musicList.length,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) => musicCard(
-                          cover: musicList[index]['cover'],
-                        ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.45,
-                    // FutureBuilder waits for the songs to be collected and then refreshes the Widget
-                    child: FutureBuilder<List<SongInfo>>(
-                      future: _songs,
-                      builder: (BuildContext context, AsyncSnapshot<List<SongInfo>> snapshot) {
-
-                        if (snapshot.hasData) {
-                          songsList = snapshot.data;
-                          print(snapshot.data);
-                        }
-                        else {
-                          // Show a Progress Indicator until the data has been collected
-                          return SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.45,
+                      // FutureBuilder waits for the songs to be collected and then refreshes the Widget
+                      child: FutureBuilder<List<SongInfo>>(
+                        future: _songs,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<List<SongInfo>> snapshot) {
+                          if (snapshot.hasData) {
+                            songsList = snapshot.data;
+                            print(snapshot.data);
+                          } else {
+                            // Show a Progress Indicator until the data has been collected
+                            return SizedBox(
                               child: CircularProgressIndicator(),
                               width: 60,
                               height: 60,
                             );
-                        }
-                        return ListView.builder(
-                          itemCount: songsList.length,
-                          itemBuilder: (context, index) => customListTile(
-                            onTap: () {
-                              String currentTitle = songsList[index].title;
-                              String currentUrl = songsList[index].filePath;
-                              String currentImage = songsList[index].albumArtwork;
-                              String currentSinger = songsList[index].artist;
-                              IconData currentBtnIcon = Icons.pause;
-                              // bool currentIsPlaying = false;
-                                  {print(currentUrl);}
-                              // audio.play(currentUrl);
-                              playMusic(currentUrl);
-                              Provider.of<DataListClass>(context, listen: false).updateData(
-                                  currentTitle: currentTitle,
-                                  currentSinger: currentSinger,
-                                  currentUrl: currentUrl,
-                                  currentImage: currentImage,
-                                  currentBtnIcon: currentBtnIcon,
-                                  currentIsPlaying: isPlaying,
-                                  duration: Duration(seconds: 0),
-                                  position: Duration(seconds: 0)
-                              );
-                            },
-                            title: songsList[index].title,
-                            artist: songsList[index].artist,
-                            albumArtwork: songsList[index].albumArtwork,
-                          ),
-                        );
-                      },
-                    )
-                  ),
+                          }
+                          return ListView.builder(
+                            itemCount: songsList.length,
+                            itemBuilder: (context, index) => customListTile(
+                              onTap: () {
+                                String currentTitle = songsList[index].title;
+                                String currentUrl = songsList[index].filePath;
+                                String currentImage =
+                                    songsList[index].albumArtwork;
+                                String currentSinger = songsList[index].artist;
+                                IconData currentBtnIcon = Icons.pause;
+                                // bool currentIsPlaying = false;
+                                {
+                                  print(currentUrl);
+                                }
+                                // audio.play(currentUrl);
+                                playMusic(currentUrl);
+                                Provider.of<DataListClass>(context,
+                                        listen: false)
+                                    .updateData(
+                                        currentTitle: currentTitle,
+                                        currentSinger: currentSinger,
+                                        currentUrl: currentUrl,
+                                        currentImage: currentImage,
+                                        currentBtnIcon: currentBtnIcon,
+                                        currentIsPlaying: isPlaying,
+                                        duration: Duration(seconds: 0),
+                                        position: Duration(seconds: 0));
+                              },
+                              title: songsList[index].title,
+                              artist: songsList[index].artist,
+                              albumArtwork: songsList[index].albumArtwork,
+                            ),
+                          );
+                        },
+                      )),
                 ],
               ),
             ),
@@ -164,8 +200,8 @@ class _SongsPageState extends State<SongsPage> {
   }
 }
 
-
-Widget customListTile({String title, String artist, String albumArtwork, onTap}) {
+Widget customListTile(
+    {String title, String artist, String albumArtwork, onTap}) {
   return InkWell(
     onTap: onTap,
     child: Container(
@@ -178,10 +214,12 @@ Widget customListTile({String title, String artist, String albumArtwork, onTap})
             height: 90,
             width: 90,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                image: DecorationImage(
-                  image: albumArtwork != null ? FileImage(File(albumArtwork)) : AssetImage('assets/no_cover.png'),
-                  fit: BoxFit.cover,
+              borderRadius: BorderRadius.circular(16),
+              image: DecorationImage(
+                image: albumArtwork != null
+                    ? FileImage(File(albumArtwork))
+                    : AssetImage('assets/no_cover.png'),
+                fit: BoxFit.cover,
               ),
             ),
           ),
@@ -230,7 +268,9 @@ Widget musicCard({String title, String singer, String cover, onTap}) {
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: cover != null ? FileImage(File(cover)) : AssetImage('assets/no_cover.png'),
+              image: cover != null
+                  ? FileImage(File(cover))
+                  : AssetImage('assets/no_cover.png'),
               fit: BoxFit.cover,
             ),
             borderRadius: BorderRadius.only(
@@ -252,5 +292,3 @@ Widget musicCard({String title, String singer, String cover, onTap}) {
     ),
   );
 }
-
-
