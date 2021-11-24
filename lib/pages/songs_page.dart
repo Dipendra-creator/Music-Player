@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:provider/provider.dart';
-
 import '../models/music_list.dart';
 
 List<SongInfo> songsList;
@@ -124,26 +123,13 @@ class _SongsPageState extends State<SongsPage> {
           ),
           Container(
             width: MediaQuery.of(context).size.width - 20,
-            height: MediaQuery.of(context).size.height - 50,
+            // height: MediaQuery.of(context).size.height - 50,
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  // Removed Column Songs, since they were the same songs
-                  // shown on a different axis
-                  // SizedBox(
-                  //   height: 150,
-                  //   // width: 150,
-                  //   child: ListView.builder(
-                  //     itemCount: ,
-                  //     scrollDirection: Axis.horizontal,
-                  //     itemBuilder: (context, index) => musicCard(
-                  //       cover: musicList[index]['cover'],
-                  //     ),
-                  //   ),
-                  // ),
                   SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.45,
+                      height: MediaQuery.of(context).size.height - 250,
                       // FutureBuilder waits for the songs to be collected and then refreshes the Widget
                       child: FutureBuilder<List<SongInfo>>(
                         future: _songs,
@@ -235,23 +221,6 @@ Widget customListTile(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  // Marquee(
-                  //   text: title,
-                  //   style: TextStyle(
-                  //     fontSize: 16,
-                  //     fontWeight: FontWeight.w600,
-                  //   ),
-                  //   scrollAxis: Axis.horizontal,
-                  //   crossAxisAlignment: CrossAxisAlignment.start,
-                  //   blankSpace: 20.0,
-                  //   velocity: 100.0,
-                  //   pauseAfterRound: Duration(seconds: 1),
-                  //   startPadding: 10.0,
-                  //   accelerationDuration: Duration(seconds: 1),
-                  //   accelerationCurve: Curves.linear,
-                  //   decelerationDuration: Duration(milliseconds: 500),
-                  //   decelerationCurve: Curves.easeOut,
-                  // ),
                   Marquee(
                     child: Text(
                       title,
@@ -264,8 +233,8 @@ Widget customListTile(
                     textDirection : TextDirection.rtl,
                     animationDuration: Duration(seconds: 1),
                     backDuration: Duration(milliseconds: 5000),
-                    pauseDuration: Duration(milliseconds: 10),
-                    directionMarguee: DirectionMarguee.oneDirection,
+                    pauseDuration: Duration(milliseconds: 2000),
+                    directionMarguee: DirectionMarguee.TwoDirection,
                   ),
                   // Removed SizedBox to remove Overflow
                   // SizedBox(height: 5.0),
@@ -281,8 +250,8 @@ Widget customListTile(
                     textDirection : TextDirection.rtl,
                     animationDuration: Duration(seconds: 1),
                     backDuration: Duration(milliseconds: 5000),
-                    pauseDuration: Duration(milliseconds: 0),
-                    directionMarguee: DirectionMarguee.oneDirection,
+                    pauseDuration: Duration(milliseconds: 2000),
+                    directionMarguee: DirectionMarguee.TwoDirection,
                   ),
                 ],
               ),

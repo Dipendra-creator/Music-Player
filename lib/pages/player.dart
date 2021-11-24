@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smash_media/models/music_list.dart';
+import 'package:marquee_widget/marquee_widget.dart';
 
 import '../constants.dart';
 
@@ -85,11 +86,21 @@ class _PlayerState extends State<Player> {
               // padding: EdgeInsets.only(left: 10),
             ),
             Center(
-              child: Text(
-                Provider.of<DataListClass>(context).data.currentTitle ??
-                    "No Music",
-                // "Music Name",
-                style: kTextStyle,
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.65,
+                child: Marquee(
+                  child: Text(
+                    Provider.of<DataListClass>(context).data.currentTitle ??
+                        "No Music",
+                    // "Music Name",
+                    style: kTextStyle,
+                  ),
+                  textDirection : TextDirection.rtl,
+                  animationDuration: Duration(seconds: 1),
+                  backDuration: Duration(milliseconds: 5000),
+                  pauseDuration: Duration(milliseconds: 2000),
+                  directionMarguee: DirectionMarguee.TwoDirection,
+                ),
               ),
             ),
             IconButton(
