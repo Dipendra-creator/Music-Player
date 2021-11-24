@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,7 @@ import 'package:marquee_widget/marquee_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smash_media/constants.dart';
 import 'package:smash_media/models/music_list.dart';
 import 'package:smash_media/pages/player.dart';
 import 'package:smash_media/pages/songs_page.dart';
@@ -16,6 +19,45 @@ import './pages/songs_page.dart';
 void main() {
   runApp(MyHomePage());
 }
+
+class SplashScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Timer(Duration(seconds: 5), (){
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => Home()));
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.orange[700],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "Premium Music",
+              style: kSplashTextStyle,
+            ),
+            SizedBox(height: 20,),
+            CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -28,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return ChangeNotifierProvider<DataListClass>(
       create: (context) => DataListClass(),
       child: MaterialApp(
-        home: Home(),
+        home: SplashScreen(),
       ),
     );
   }
@@ -76,7 +118,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     askStoragePermission();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 1, vsync: this);
     _audioQuery = FlutterAudioQuery();
     _searchBar = new SearchBar(
         inBar: false,
@@ -171,10 +213,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 labelPadding: EdgeInsets.only(right: 45),
                 unselectedLabelColor: Color(0xFFCDCDCD),
                 tabs: [
-                  CreateTab(tabName: 'Songs'),
-                  CreateTab(tabName: 'Playlist'),
-                  CreateTab(tabName: 'Podcast'),
-                  CreateTab(tabName: 'Downloaded'),
+                  CreateTab(tabName: 'Downloads'),
                 ],
               ),
               Container(
@@ -183,9 +222,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 child: TabBarView(
                   controller: _tabController,
                   children: [
-                    SongsPage(),
-                    SongsPage(),
-                    SongsPage(),
                     SongsPage(),
                   ],
                 ),

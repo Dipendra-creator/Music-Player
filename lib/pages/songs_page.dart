@@ -156,11 +156,6 @@ class _SongsPageState extends State<SongsPage> {
                                     songsList[index].albumArtwork;
                                 String currentSinger = songsList[index].artist;
                                 IconData currentBtnIcon = Icons.pause;
-                                // bool currentIsPlaying = false;
-                                {
-                                  print(currentUrl);
-                                }
-                                // audio.play(currentUrl);
                                 playMusic(currentUrl);
                                 Provider.of<DataListClass>(context,
                                         listen: false)
