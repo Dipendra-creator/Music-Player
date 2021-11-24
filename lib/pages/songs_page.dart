@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:provider/provider.dart';
-
 import '../models/music_list.dart';
 
 List<SongInfo> songsList;
@@ -238,10 +237,18 @@ Widget customListTile(
                   Text(
                     title,
                     style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
+
+                  // Marquee(
+                  //   text: title,
+                  //   style: TextStyle(
+                  //     fontSize: 16,
+                  //     fontWeight: FontWeight.w600,
+                  //   ),
+                  // ),
                   // Removed SizedBox to remove Overflow
                   // SizedBox(height: 5.0),
                   Text(

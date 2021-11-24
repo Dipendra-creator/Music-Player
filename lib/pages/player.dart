@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+// import 'package:marquee/marquee.dart';
 import 'package:provider/provider.dart';
 import 'package:smash_media/models/music_list.dart';
 
@@ -11,6 +12,9 @@ class Player extends StatefulWidget {
 }
 
 class _PlayerState extends State<Player> {
+  IconData likeIcon = Icons.thumb_up_outlined;
+  IconData dislikeIcon = Icons.thumb_down_outlined;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,30 +39,49 @@ class _PlayerState extends State<Player> {
           Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
             IconButton(
                 icon: Icon(
-                  Icons.thumb_up_outlined,
+                  likeIcon,
                   color: Colors.black,
                   size: 35,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {
+                    if (likeIcon == Icons.thumb_up_outlined) {
+                      likeIcon = Icons.thumb_up;
+                    } else {
+                      likeIcon = Icons.thumb_up_outlined;
+                    }
+                  });
+                },
                 padding: EdgeInsets.only(left: 10)),
             Center(
               child: Text(
-                "Music Name",
+                Provider.of<DataListClass>(context).data.currentTitle ??
+                    "No Music",
+                // "Music Name",
                 style: kTextStyle,
               ),
             ),
             IconButton(
                 icon: Icon(
-                  Icons.thumb_down_outlined,
+                  dislikeIcon,
                   color: Colors.black,
                   size: 35,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {
+                    if (dislikeIcon == Icons.thumb_down_outlined) {
+                      dislikeIcon = Icons.thumb_down;
+                    } else {
+                      dislikeIcon = Icons.thumb_down_outlined;
+                    }
+                  });
+                },
                 padding: EdgeInsets.only(left: 10)),
           ]),
           Center(
             child: Text(
-              "Author Name",
+              Provider.of<DataListClass>(context).data.currentSinger,
+              // "Author Name",
               style: const TextStyle(
                   fontFamily: 'Varela', fontSize: 22, color: Colors.black45),
             ),
@@ -86,6 +109,15 @@ class _PlayerState extends State<Player> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
+              IconButton(
+                icon: Icon(
+                  Icons.shuffle_rounded,
+                  color: Colors.black,
+                  size: 35,
+                ),
+                onPressed: () {},
+                padding: EdgeInsets.only(left: 10),
+              ),
               IconButton(
                 icon: Icon(
                   Icons.skip_previous_outlined,
@@ -144,6 +176,27 @@ class _PlayerState extends State<Player> {
                 onPressed: () {},
                 padding: EdgeInsets.only(left: 10),
               ),
+              // IconButton with Repeat Icon
+              IconButton(
+                icon: Icon(
+                  // For repeating the playlist
+                  Icons.repeat_rounded,
+                  // For repeating the song
+                  // Icons.repeat_one_outlined,
+                  color: Colors.black,
+                  size: 35,
+                ),
+                onPressed: () {},
+                padding: EdgeInsets.only(left: 10),
+              ),
+              // IconButton(
+              //   icon: Icon(
+              //     color: Colors.black,
+              //     size: 35,
+              //   ),
+              //   onPressed: () {},
+              //   padding: EdgeInsets.only(left: 10),
+              // ),
               // IconButton(
               //   // padding: EdgeInsets.only(right: 60),
               //   onPressed: () {},
