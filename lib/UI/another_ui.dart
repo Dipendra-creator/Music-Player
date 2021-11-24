@@ -117,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ],
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            image: AssetImage('images/Search.png'),
+                            image: AssetImage('images/search.png'),
                           )),
                     ),
                   ),

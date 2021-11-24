@@ -2,15 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
-import 'package:smash_media/models/music_list.dart';
-import 'package:smash_media/pages/player.dart';
-import './pages/songs_page.dart';
-import 'package:provider/provider.dart';
-import 'package:smash_media/pages/songs_page.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smash_media/models/music_list.dart';
+import 'package:smash_media/pages/player.dart';
+import 'package:smash_media/pages/songs_page.dart';
+
+import './pages/songs_page.dart';
 
 void main() {
   runApp(MyHomePage());
@@ -47,20 +48,24 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     return new AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        leading:IconButton(
+        leading: IconButton(
           icon: Icon(Icons.search, size: 35, color: Colors.black45),
-          onPressed: () {_searchBar.beginSearch(context);},
+          onPressed: () {
+            _searchBar.beginSearch(context);
+          },
         ),
         actions: [
           // Old Refresh Indicator, removed since Pull to Refresh
           // IconButton(onPressed: () => {}, icon: Icon(Icons.refresh_rounded,  size: 35, color: Colors.black45)),
-          IconButton(icon: Icon(Icons.queue_music, size: 35, color: Colors.black45),
-          onPressed: () {
-            print('Music Queue');
-          },
-        )]
-    );
+          IconButton(
+            icon: Icon(Icons.queue_music, size: 35, color: Colors.black45),
+            onPressed: () {
+              print('Music Queue');
+            },
+          )
+        ]);
   }
+
   // TODO: Display the queries to screen and connected it to the audio player
   void searchQuery(String query) async {
     List<SongInfo> results = await _audioQuery.searchSongs(query: query);
@@ -77,13 +82,15 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         inBar: false,
         setState: setState,
         onSubmitted: searchQuery,
-        buildDefaultAppBar: buildAppBar
-    );
+        buildDefaultAppBar: buildAppBar);
   }
+
   void askStoragePermission() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool storageAlreadyDeniedOnce = prefs.getBool('storageAlreadyDeniedOnce') ?? false;
-    print("Storage Permission: storageAlreadyDeniedOnce: " + storageAlreadyDeniedOnce.toString());
+    bool storageAlreadyDeniedOnce =
+        prefs.getBool('storageAlreadyDeniedOnce') ?? false;
+    print("Storage Permission: storageAlreadyDeniedOnce: " +
+        storageAlreadyDeniedOnce.toString());
     if (storageAlreadyDeniedOnce) {
       return showModalBottomSheet<void>(
         context: context,
@@ -97,21 +104,23 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   // TODO: Add Styling
-                  const Text('Go to settings and enable File Storage Permissions'),
-                  ElevatedButton(onPressed: openAppSettings, child: const Text('Okay')),
-                  ElevatedButton(onPressed: () => Navigator.pop(context), child: Text("Cancel"))
+                  const Text(
+                      'Go to settings and enable File Storage Permissions'),
+                  ElevatedButton(
+                      onPressed: openAppSettings, child: const Text('Okay')),
+                  ElevatedButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text("Cancel"))
                 ],
               ),
             ),
           );
         },
       );
-    }
-    else if (await Permission.storage.status.isDenied){
-      if (!(await Permission.storage.request().isGranted)){
+    } else if (await Permission.storage.status.isDenied) {
+      if (!(await Permission.storage.request().isGranted)) {
         await prefs.setBool('storageAlreadyDeniedOnce', false);
-      }
-      else if (await Permission.storage.isGranted) {
+      } else if (await Permission.storage.isGranted) {
         print("Acquired");
       }
     }
@@ -124,13 +133,15 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         // Added Pull To Refresh
         body: RefreshIndicator(
           onRefresh: () {
-
             // Refreshes the songs list in case the user has added some new songs to device storage
-            Provider.of<DataListClass>(context, listen: false).updateAudioQuery();
+            Provider.of<DataListClass>(context, listen: false)
+                .updateAudioQuery();
 
             print("Songs");
-            print(Provider.of<DataListClass>(context, listen: false).data.songs);
-            return Provider.of<DataListClass>(context, listen: false).updateSongs();
+            print(
+                Provider.of<DataListClass>(context, listen: false).data.songs);
+            return Provider.of<DataListClass>(context, listen: false)
+                .updateSongs();
           },
           child: ListView(
             padding: EdgeInsets.only(left: 20.0),
@@ -192,8 +203,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 class BottomPlayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector (
-      onTap: () { Navigator.push(context, MaterialPageRoute(builder: (context) => Player()));},
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Player()));
+      },
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -237,7 +251,8 @@ class BottomPlayer extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
                       image: DecorationImage(
-                        image: NetworkImage("https://w7.pngwing.com/pngs/710/955/png-transparent-vinyl-record-artwork-phonograph-record-compact-disc-lp-record-disc-jockey-symbol-miscellaneous-classical-music-sound.png"),
+                        image: NetworkImage(
+                            "https://w7.pngwing.com/pngs/710/955/png-transparent-vinyl-record-artwork-phonograph-record-compact-disc-lp-record-disc-jockey-symbol-miscellaneous-classical-music-sound.png"),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -265,7 +280,10 @@ class BottomPlayer extends StatelessWidget {
                     ],
                   ),
                   IconButton(
-                    icon: Icon(Provider.of<DataListClass>(context, listen: false).data.btnIcon),
+                    icon: Icon(
+                        Provider.of<DataListClass>(context, listen: false)
+                            .data
+                            .btnIcon),
                     onPressed: () {
                       {
                         print(Provider.of<DataListClass>(context, listen: false)
@@ -280,30 +298,30 @@ class BottomPlayer extends StatelessWidget {
                             .updateData(
                           currentBtnIcon: Icons.play_arrow,
                           currentUrl:
-                          Provider.of<DataListClass>(context, listen: false)
-                              .data
-                              .currentUrl,
+                              Provider.of<DataListClass>(context, listen: false)
+                                  .data
+                                  .currentUrl,
                           currentSinger:
-                          Provider.of<DataListClass>(context, listen: false)
-                              .data
-                              .currentSinger,
+                              Provider.of<DataListClass>(context, listen: false)
+                                  .data
+                                  .currentSinger,
                           currentTitle:
-                          Provider.of<DataListClass>(context, listen: false)
-                              .data
-                              .currentTitle,
+                              Provider.of<DataListClass>(context, listen: false)
+                                  .data
+                                  .currentTitle,
                           currentImage:
-                          Provider.of<DataListClass>(context, listen: false)
-                              .data
-                              .currentImage,
+                              Provider.of<DataListClass>(context, listen: false)
+                                  .data
+                                  .currentImage,
                           currentIsPlaying: false,
                           duration:
-                          Provider.of<DataListClass>(context, listen: false)
-                              .data
-                              .duration,
+                              Provider.of<DataListClass>(context, listen: false)
+                                  .data
+                                  .duration,
                           position:
-                          Provider.of<DataListClass>(context, listen: false)
-                              .data
-                              .position,
+                              Provider.of<DataListClass>(context, listen: false)
+                                  .data
+                                  .position,
                         );
                       } else {
                         audioPlayer.resume();
@@ -311,30 +329,30 @@ class BottomPlayer extends StatelessWidget {
                             .updateData(
                           currentBtnIcon: Icons.pause,
                           currentUrl:
-                          Provider.of<DataListClass>(context, listen: false)
-                              .data
-                              .currentUrl,
+                              Provider.of<DataListClass>(context, listen: false)
+                                  .data
+                                  .currentUrl,
                           currentSinger:
-                          Provider.of<DataListClass>(context, listen: false)
-                              .data
-                              .currentSinger,
+                              Provider.of<DataListClass>(context, listen: false)
+                                  .data
+                                  .currentSinger,
                           currentTitle:
-                          Provider.of<DataListClass>(context, listen: false)
-                              .data
-                              .currentTitle,
+                              Provider.of<DataListClass>(context, listen: false)
+                                  .data
+                                  .currentTitle,
                           currentImage:
-                          Provider.of<DataListClass>(context, listen: false)
-                              .data
-                              .currentImage,
+                              Provider.of<DataListClass>(context, listen: false)
+                                  .data
+                                  .currentImage,
                           currentIsPlaying: true,
                           duration:
-                          Provider.of<DataListClass>(context, listen: false)
-                              .data
-                              .duration,
+                              Provider.of<DataListClass>(context, listen: false)
+                                  .data
+                                  .duration,
                           position:
-                          Provider.of<DataListClass>(context, listen: false)
-                              .data
-                              .position,
+                              Provider.of<DataListClass>(context, listen: false)
+                                  .data
+                                  .position,
                         );
                       }
                     },

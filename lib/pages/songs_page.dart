@@ -1,9 +1,11 @@
 import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../models/music_list.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
+import 'package:provider/provider.dart';
+
+import '../models/music_list.dart';
 
 List<SongInfo> songsList;
 
@@ -109,7 +111,10 @@ class _SongsPageState extends State<SongsPage> {
 
   @override
   Widget build(BuildContext context) {
-    _songs = Provider.of<DataListClass>(context).data.audioQuery.getSongs();
+    _songs = Provider.of<DataListClass>(context, listen: false)
+        .data
+        .audioQuery
+        .getSongs();
     return Scaffold(
       backgroundColor: Color(0xFFFCFAF8),
       body: ListView(
@@ -218,7 +223,7 @@ Widget customListTile(
               image: DecorationImage(
                 image: albumArtwork != null
                     ? FileImage(File(albumArtwork))
-                    : AssetImage('assets/no_cover.png'),
+                    : AssetImage('assets/images/no_cover.png'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -270,7 +275,7 @@ Widget musicCard({String title, String singer, String cover, onTap}) {
             image: DecorationImage(
               image: cover != null
                   ? FileImage(File(cover))
-                  : AssetImage('assets/no_cover.png'),
+                  : AssetImage('assets/images/no_cover.png'),
               fit: BoxFit.cover,
             ),
             borderRadius: BorderRadius.only(
