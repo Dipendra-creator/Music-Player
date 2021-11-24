@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:marquee/marquee.dart';
 import 'package:provider/provider.dart';
 import 'package:smash_media/models/music_list.dart';
 
@@ -11,10 +10,40 @@ class Player extends StatefulWidget {
   _PlayerState createState() => _PlayerState();
 }
 
-class _PlayerState extends State<Player> {
-  IconData likeIcon = Icons.thumb_up_outlined;
-  IconData dislikeIcon = Icons.thumb_down_outlined;
+Icon repeatDisabledIcon = Icon(
+  Icons.repeat_rounded,
+  color: Colors.black54,
+  size: 35,
+);
+Icon repeatPlaylistIcon = Icon(
+  Icons.repeat_rounded,
+  color: Colors.black,
+  size: 35,
+);
+Icon repeatSongIcon = Icon(
+  Icons.repeat_one_outlined,
+  color: Colors.black,
+  size: 35,
+);
+enum repeatState {
+  disabled,
+  playlist,
+  song,
+}
+enum shuffleState {
+  disabled,
+  enabled,
+}
 
+class _PlayerState extends State<Player> {
+  bool like = false, dislike = false;
+  bool repeatPlaylist = false, repeatSong = false;
+
+  Icon repeatIcon = repeatDisabledIcon;
+  repeatState currentRepeatState = repeatState.disabled;
+
+  Color shuffleColor = Colors.black54;
+  shuffleState currentShuffleState = shuffleState.disabled;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,21 +67,23 @@ class _PlayerState extends State<Player> {
           ),
           Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
             IconButton(
-                icon: Icon(
-                  likeIcon,
-                  color: Colors.black,
-                  size: 35,
-                ),
-                onPressed: () {
-                  setState(() {
-                    if (likeIcon == Icons.thumb_up_outlined) {
-                      likeIcon = Icons.thumb_up;
-                    } else {
-                      likeIcon = Icons.thumb_up_outlined;
+              icon: Icon(
+                like ? Icons.thumb_up : Icons.thumb_up_outlined,
+                color: Colors.black,
+                size: 35,
+              ),
+              onPressed: () {
+                setState(() {
+                  like = !like;
+                  if (like) {
+                    if (dislike) {
+                      dislike = false;
                     }
-                  });
-                },
-                padding: EdgeInsets.only(left: 10)),
+                  }
+                });
+              },
+              // padding: EdgeInsets.only(left: 10),
+            ),
             Center(
               child: Text(
                 Provider.of<DataListClass>(context).data.currentTitle ??
@@ -62,21 +93,23 @@ class _PlayerState extends State<Player> {
               ),
             ),
             IconButton(
-                icon: Icon(
-                  dislikeIcon,
-                  color: Colors.black,
-                  size: 35,
-                ),
-                onPressed: () {
-                  setState(() {
-                    if (dislikeIcon == Icons.thumb_down_outlined) {
-                      dislikeIcon = Icons.thumb_down;
-                    } else {
-                      dislikeIcon = Icons.thumb_down_outlined;
+              icon: Icon(
+                dislike ? Icons.thumb_down : Icons.thumb_down_outlined,
+                color: Colors.black,
+                size: 35,
+              ),
+              onPressed: () {
+                setState(() {
+                  dislike = !dislike;
+                  if (dislike) {
+                    if (like) {
+                      like = false;
                     }
-                  });
-                },
-                padding: EdgeInsets.only(left: 10)),
+                  }
+                });
+              },
+              // padding: EdgeInsets.only(left: 10),
+            ),
           ]),
           Center(
             child: Text(
@@ -112,11 +145,21 @@ class _PlayerState extends State<Player> {
               IconButton(
                 icon: Icon(
                   Icons.shuffle_rounded,
-                  color: Colors.black,
+                  color: shuffleColor,
                   size: 35,
                 ),
-                onPressed: () {},
-                padding: EdgeInsets.only(left: 10),
+                onPressed: () {
+                  setState(() {
+                    if (currentShuffleState == shuffleState.disabled) {
+                      currentShuffleState = shuffleState.enabled;
+                      shuffleColor = Colors.black;
+                    } else {
+                      currentShuffleState = shuffleState.disabled;
+                      shuffleColor = Colors.black54;
+                    }
+                  });
+                },
+                // padding: EdgeInsets.only(left: 10),
               ),
               IconButton(
                 icon: Icon(
@@ -125,45 +168,16 @@ class _PlayerState extends State<Player> {
                   size: 35,
                 ),
                 onPressed: () {},
-                padding: EdgeInsets.only(left: 10),
+                // padding: EdgeInsets.only(left: 10),
               ),
-
-              // IconButton(
-              //   // padding: EdgeInsets.only(left: 60),
-              //   onPressed: () {},
-              //   icon: Image.asset(
-              //     'assets/images/prev.png',
-              //     height: 100,
-              //     width: 100,
-              //   ),
-              // ),
-              // GestureDetector(
-              //   onTap: () {
-              //     print("Tapped!");
-              //   },
-              //   child: Container(
-              //     height: 75,
-              //     width: 75,
-              //     decoration: BoxDecoration(
-              //         image: DecorationImage(
-              //       image: AssetImage('assets/images/play.png'),
-              //     )),
-              //   ),
-              // ),
-              // TODO: Center the Play button inside
-              // If we use EdgeInsets.fromLTRB padding then the Play button is in the middle, but the pause button is shifted to right
-              // If we use EdgeInsets.all padding then the Play button is to a little left, but the pause button is in middle
               Container(
                 child: IconButton(
-                  onPressed: () {},
-                  icon: Image.asset(
-                    'assets/images/play.png',
-                  ),
-                ),
-                height: 100,
-                width: 100,
-                // margin: EdgeInsets.all(10.0),
-                padding: EdgeInsets.fromLTRB(25, 20, 20, 20),
+                    onPressed: () {},
+                    // Icons.pause_outline
+                    // TODO: Change Icon through the state of the music
+                    icon: Icon(Icons.play_arrow_outlined, size: 50)),
+                height: 80,
+                width: 80,
                 decoration: BoxDecoration(
                     color: Colors.deepOrangeAccent, shape: BoxShape.circle),
               ),
@@ -171,23 +185,32 @@ class _PlayerState extends State<Player> {
                 icon: Icon(
                   Icons.skip_next_outlined,
                   color: Colors.black,
-                  size: 50,
-                ),
-                onPressed: () {},
-                padding: EdgeInsets.only(left: 10),
-              ),
-              // IconButton with Repeat Icon
-              IconButton(
-                icon: Icon(
-                  // For repeating the playlist
-                  Icons.repeat_rounded,
-                  // For repeating the song
-                  // Icons.repeat_one_outlined,
-                  color: Colors.black,
                   size: 35,
                 ),
                 onPressed: () {},
-                padding: EdgeInsets.only(left: 10),
+                // padding: EdgeInsets.only(left: 10),
+              ),
+              IconButton(
+                icon: repeatIcon,
+                onPressed: () {
+                  if (currentRepeatState == repeatState.disabled) {
+                    setState(() {
+                      repeatIcon = repeatPlaylistIcon;
+                      currentRepeatState = repeatState.playlist;
+                    });
+                  } else if (currentRepeatState == repeatState.playlist) {
+                    setState(() {
+                      repeatIcon = repeatSongIcon;
+                      currentRepeatState = repeatState.song;
+                    });
+                  } else if (currentRepeatState == repeatState.song) {
+                    setState(() {
+                      repeatIcon = repeatDisabledIcon;
+                      currentRepeatState = repeatState.disabled;
+                    });
+                  }
+                },
+                // padding: EdgeInsets.only(left: 10),
               ),
               // IconButton(
               //   icon: Icon(
