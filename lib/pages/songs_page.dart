@@ -1,9 +1,10 @@
 import 'dart:io';
-
+import 'package:marquee_widget/marquee_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:provider/provider.dart';
+
 import '../models/music_list.dart';
 
 List<SongInfo> songsList;
@@ -234,29 +235,54 @@ Widget customListTile(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-
                   // Marquee(
                   //   text: title,
                   //   style: TextStyle(
                   //     fontSize: 16,
                   //     fontWeight: FontWeight.w600,
                   //   ),
+                  //   scrollAxis: Axis.horizontal,
+                  //   crossAxisAlignment: CrossAxisAlignment.start,
+                  //   blankSpace: 20.0,
+                  //   velocity: 100.0,
+                  //   pauseAfterRound: Duration(seconds: 1),
+                  //   startPadding: 10.0,
+                  //   accelerationDuration: Duration(seconds: 1),
+                  //   accelerationCurve: Curves.linear,
+                  //   decelerationDuration: Duration(milliseconds: 500),
+                  //   decelerationCurve: Curves.easeOut,
                   // ),
+                  Marquee(
+                    child: Text(
+                      title,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    // scrollAxis: Axis.horizontal,
+                    textDirection : TextDirection.rtl,
+                    animationDuration: Duration(seconds: 1),
+                    backDuration: Duration(milliseconds: 5000),
+                    pauseDuration: Duration(milliseconds: 10),
+                    directionMarguee: DirectionMarguee.oneDirection,
+                  ),
                   // Removed SizedBox to remove Overflow
                   // SizedBox(height: 5.0),
-                  Text(
-                    artist,
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 16,
+                  Marquee(
+                    child: Text(
+                      artist,
+                      style: TextStyle(
+                        fontSize: 16,
+                        // fontWeight: FontWeight.w600,
+                      ),
                     ),
+                    // scrollAxis: Axis.horizontal,
+                    textDirection : TextDirection.rtl,
+                    animationDuration: Duration(seconds: 1),
+                    backDuration: Duration(milliseconds: 5000),
+                    pauseDuration: Duration(milliseconds: 0),
+                    directionMarguee: DirectionMarguee.oneDirection,
                   ),
                 ],
               ),

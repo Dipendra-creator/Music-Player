@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
+import 'package:marquee_widget/marquee_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -241,126 +241,144 @@ class BottomPlayer extends StatelessWidget {
               },
             ),
             // Error Image Soource
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8, left: 0, right: 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    height: 60,
-                    width: 60,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      image: DecorationImage(
-                        image: NetworkImage(
-                            "https://w7.pngwing.com/pngs/710/955/png-transparent-vinyl-record-artwork-phonograph-record-compact-disc-lp-record-disc-jockey-symbol-miscellaneous-classical-music-sound.png"),
-                        fit: BoxFit.cover,
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 8, left: 0, right: 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 60,
+                      width: 60,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        image: DecorationImage(
+                          image: NetworkImage(
+                              "https://w7.pngwing.com/pngs/710/955/png-transparent-vinyl-record-artwork-phonograph-record-compact-disc-lp-record-disc-jockey-symbol-miscellaneous-classical-music-sound.png"),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        Provider.of<DataListClass>(context).data.currentTitle,
-                        style: TextStyle(
-                          // fontSize: ,
-                          fontWeight: FontWeight.w600,
-                        ),
+                    GridTile(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Marquee(
+                            child: Text(
+                              Provider.of<DataListClass>(context).data.currentTitle,
+                              style: TextStyle(
+                                // fontSize: ,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            textDirection : TextDirection.rtl,
+                            animationDuration: Duration(seconds: 1),
+                            backDuration: Duration(milliseconds: 5000),
+                            pauseDuration: Duration(milliseconds: 10),
+                            directionMarguee: DirectionMarguee.oneDirection,
+                          ),
+                          SizedBox(
+                            height: 5.0,
+                          ),
+                          Marquee(
+                            child: Text(
+                              Provider.of<DataListClass>(context).data.currentSinger,
+                              style: TextStyle(
+                                color: Colors.grey,
+                                // fontSize: 14,
+                              ),
+                            ),
+                            textDirection : TextDirection.rtl,
+                            animationDuration: Duration(seconds: 1),
+                            backDuration: Duration(milliseconds: 5000),
+                            pauseDuration: Duration(milliseconds: 10),
+                            directionMarguee: DirectionMarguee.oneDirection,
+                          ),
+                        ],
                       ),
-                      SizedBox(
-                        height: 5.0,
-                      ),
-                      Text(
-                        Provider.of<DataListClass>(context).data.currentSinger,
-                        style: TextStyle(
-                          color: Colors.grey,
-                          // fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                  IconButton(
-                    icon: Icon(
-                        Provider.of<DataListClass>(context, listen: false)
+                    ),
+                    IconButton(
+                      icon: Icon(
+                          Provider.of<DataListClass>(context, listen: false)
+                              .data
+                              .btnIcon),
+                      onPressed: () {
+                        {
+                          print(Provider.of<DataListClass>(context, listen: false)
+                              .data
+                              .isPlaying);
+                        }
+                        if (Provider.of<DataListClass>(context, listen: false)
                             .data
-                            .btnIcon),
-                    onPressed: () {
-                      {
-                        print(Provider.of<DataListClass>(context, listen: false)
-                            .data
-                            .isPlaying);
-                      }
-                      if (Provider.of<DataListClass>(context, listen: false)
-                          .data
-                          .isPlaying) {
-                        audioPlayer.pause();
-                        Provider.of<DataListClass>(context, listen: false)
-                            .updateData(
-                          currentBtnIcon: Icons.play_arrow,
-                          currentUrl:
-                              Provider.of<DataListClass>(context, listen: false)
-                                  .data
-                                  .currentUrl,
-                          currentSinger:
-                              Provider.of<DataListClass>(context, listen: false)
-                                  .data
-                                  .currentSinger,
-                          currentTitle:
-                              Provider.of<DataListClass>(context, listen: false)
-                                  .data
-                                  .currentTitle,
-                          currentImage:
-                              Provider.of<DataListClass>(context, listen: false)
-                                  .data
-                                  .currentImage,
-                          currentIsPlaying: false,
-                          duration:
-                              Provider.of<DataListClass>(context, listen: false)
-                                  .data
-                                  .duration,
-                          position:
-                              Provider.of<DataListClass>(context, listen: false)
-                                  .data
-                                  .position,
-                        );
-                      } else {
-                        audioPlayer.resume();
-                        Provider.of<DataListClass>(context, listen: false)
-                            .updateData(
-                          currentBtnIcon: Icons.pause,
-                          currentUrl:
-                              Provider.of<DataListClass>(context, listen: false)
-                                  .data
-                                  .currentUrl,
-                          currentSinger:
-                              Provider.of<DataListClass>(context, listen: false)
-                                  .data
-                                  .currentSinger,
-                          currentTitle:
-                              Provider.of<DataListClass>(context, listen: false)
-                                  .data
-                                  .currentTitle,
-                          currentImage:
-                              Provider.of<DataListClass>(context, listen: false)
-                                  .data
-                                  .currentImage,
-                          currentIsPlaying: true,
-                          duration:
-                              Provider.of<DataListClass>(context, listen: false)
-                                  .data
-                                  .duration,
-                          position:
-                              Provider.of<DataListClass>(context, listen: false)
-                                  .data
-                                  .position,
-                        );
-                      }
-                    },
-                    iconSize: 42,
-                    color: Color(0xFFFF9544),
-                  )
-                ],
+                            .isPlaying) {
+                          audioPlayer.pause();
+                          Provider.of<DataListClass>(context, listen: false)
+                              .updateData(
+                            currentBtnIcon: Icons.play_arrow,
+                            currentUrl:
+                                Provider.of<DataListClass>(context, listen: false)
+                                    .data
+                                    .currentUrl,
+                            currentSinger:
+                                Provider.of<DataListClass>(context, listen: false)
+                                    .data
+                                    .currentSinger,
+                            currentTitle:
+                                Provider.of<DataListClass>(context, listen: false)
+                                    .data
+                                    .currentTitle,
+                            currentImage:
+                                Provider.of<DataListClass>(context, listen: false)
+                                    .data
+                                    .currentImage,
+                            currentIsPlaying: false,
+                            duration:
+                                Provider.of<DataListClass>(context, listen: false)
+                                    .data
+                                    .duration,
+                            position:
+                                Provider.of<DataListClass>(context, listen: false)
+                                    .data
+                                    .position,
+                          );
+                        } else {
+                          audioPlayer.resume();
+                          Provider.of<DataListClass>(context, listen: false)
+                              .updateData(
+                            currentBtnIcon: Icons.pause,
+                            currentUrl:
+                                Provider.of<DataListClass>(context, listen: false)
+                                    .data
+                                    .currentUrl,
+                            currentSinger:
+                                Provider.of<DataListClass>(context, listen: false)
+                                    .data
+                                    .currentSinger,
+                            currentTitle:
+                                Provider.of<DataListClass>(context, listen: false)
+                                    .data
+                                    .currentTitle,
+                            currentImage:
+                                Provider.of<DataListClass>(context, listen: false)
+                                    .data
+                                    .currentImage,
+                            currentIsPlaying: true,
+                            duration:
+                                Provider.of<DataListClass>(context, listen: false)
+                                    .data
+                                    .duration,
+                            position:
+                                Provider.of<DataListClass>(context, listen: false)
+                                    .data
+                                    .position,
+                          );
+                        }
+                      },
+                      iconSize: 42,
+                      color: Color(0xFFFF9544),
+                    )
+                  ],
+                ),
               ),
             )
           ],
