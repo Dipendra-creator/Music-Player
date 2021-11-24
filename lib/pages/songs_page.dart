@@ -24,6 +24,7 @@ class _SongsPageState extends State<SongsPage> {
     super.initState();
   }
 
+  @override
   bool isPlaying = false;
   String currentSong = "";
 
@@ -62,6 +63,7 @@ class _SongsPageState extends State<SongsPage> {
             position: Duration(seconds: 0));
       }
     }
+
     audioPlayer.onDurationChanged.listen((event) {
       Provider.of<DataListClass>(context, listen: false).updateData(
         currentBtnIcon:
@@ -156,6 +158,7 @@ class _SongsPageState extends State<SongsPage> {
                                     songsList[index].albumArtwork;
                                 String currentSinger = songsList[index].artist;
                                 IconData currentBtnIcon = Icons.pause;
+                                
                                 playMusic(currentUrl);
                                 Provider.of<DataListClass>(context,
                                         listen: false)

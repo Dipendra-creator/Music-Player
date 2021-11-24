@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +12,6 @@ import 'package:smash_media/constants.dart';
 import 'package:smash_media/models/music_list.dart';
 import 'package:smash_media/pages/player.dart';
 import 'package:smash_media/pages/songs_page.dart';
-
 import './pages/songs_page.dart';
 
 void main() {
@@ -30,10 +28,12 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Timer(Duration(seconds: 5), (){
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => Home()));
+    Timer(Duration(seconds: 5), () {
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (_) => Home()));
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +47,9 @@ class _SplashScreenState extends State<SplashScreen> {
               "Premium Music",
               style: kSplashTextStyle,
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
             ),
@@ -57,7 +59,6 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
-
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -126,6 +127,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         onSubmitted: searchQuery,
         buildDefaultAppBar: buildAppBar);
   }
+
 
   void askStoragePermission() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -232,14 +234,15 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         bottomNavigationBar: SizedBox(
           height: 120,
           child: Container(
-              width: MediaQuery.of(context).size.width,
-              child: BottomPlayer()
-          ),
+              width: MediaQuery.of(context).size.width, child: BottomPlayer()),
         ));
   }
 }
 
 class BottomPlayer extends StatelessWidget {
+  void seek(double value) {
+    audioPlayer.seek(Duration(seconds: value.toInt()));
+  }
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -275,7 +278,10 @@ class BottomPlayer extends StatelessWidget {
                   .toDouble(),
               onChanged: (value) {
                 {
-                  // Provider.of<DataListClass>(context).updateData()
+                  // TODO: Change to seekTo
+                  Provider.of<DataListClass>(context, listen: false)
+                      .data
+                      .seek(value);
                 }
               },
             ),
@@ -303,20 +309,20 @@ class BottomPlayer extends StatelessWidget {
                   Container(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      // crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-
                         Container(
                           width: MediaQuery.of(context).size.width * 0.65,
                           child: Marquee(
                             child: Text(
-                              Provider.of<DataListClass>(context).data.currentTitle,
+                              Provider.of<DataListClass>(context)
+                                  .data
+                                  .currentTitle,
                               style: TextStyle(
                                 // fontSize: ,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            textDirection : TextDirection.rtl,
+                            textDirection: TextDirection.rtl,
                             animationDuration: Duration(seconds: 1),
                             backDuration: Duration(milliseconds: 5000),
                             pauseDuration: Duration(milliseconds: 2000),
@@ -328,13 +334,15 @@ class BottomPlayer extends StatelessWidget {
                         ),
                         Marquee(
                           child: Text(
-                            Provider.of<DataListClass>(context).data.currentSinger,
+                            Provider.of<DataListClass>(context)
+                                .data
+                                .currentSinger,
                             style: TextStyle(
                               color: Colors.grey,
                               // fontSize: 14,
                             ),
                           ),
-                          textDirection : TextDirection.ltr,
+                          textDirection: TextDirection.ltr,
                           animationDuration: Duration(seconds: 1),
                           backDuration: Duration(milliseconds: 5000),
                           pauseDuration: Duration(milliseconds: 2000),

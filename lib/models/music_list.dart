@@ -3,8 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
+import 'package:smash_media/pages/songs_page.dart';
 
 AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
+
+Duration duration = new Duration();
+Duration position = new Duration();
+
+
 
 class Data {
   String currentTitle;
@@ -29,6 +35,13 @@ class Data {
     this.position,
     this.audioQuery,
   });
+
+  get currentIndex => songs.indexOf(songsList.firstWhere((song) => song.title == currentTitle));
+
+  void seek(double value) {
+    audioPlayer.seek(Duration(seconds: value.toInt()));
+  }
+  
 }
 
 class DataListClass extends ChangeNotifier {
@@ -52,7 +65,7 @@ class DataListClass extends ChangeNotifier {
       bool currentIsPlaying,
       Duration duration,
       Duration position,
-      FlutterAudioQuery flutterAudioQuery}) {
+      FlutterAudioQuery flutterAudioQuery, currentIndex}) {
     data.currentImage = currentImage;
     data.currentTitle = currentTitle;
     data.currentUrl = currentUrl;
