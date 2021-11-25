@@ -10,38 +10,32 @@ AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
 Duration duration = new Duration();
 Duration position = new Duration();
 
-
-
 class Data {
   String currentTitle;
   String currentUrl;
   String currentImage;
   String currentSinger;
-  IconData btnIcon = Icons.play_arrow;
   bool isPlaying = false;
   Duration duration = new Duration();
   Duration position = new Duration();
   FlutterAudioQuery audioQuery = new FlutterAudioQuery();
   List<SongInfo> songs;
+  AudioPlayer audioPlayer;
 
   Data({
     this.currentImage,
     this.currentUrl,
     this.currentSinger,
     this.currentTitle,
-    this.btnIcon,
     this.isPlaying,
     this.duration,
     this.position,
     this.audioQuery,
+    this.audioPlayer,
   });
 
-  get currentIndex => songs.indexOf(songsList.firstWhere((song) => song.title == currentTitle));
-
-  void seek(double value) {
-    audioPlayer.seek(Duration(seconds: value.toInt()));
-  }
-  
+  get currentIndex =>
+      songs.indexOf(songsList.firstWhere((song) => song.title == currentTitle));
 }
 
 class DataListClass extends ChangeNotifier {
@@ -50,22 +44,22 @@ class DataListClass extends ChangeNotifier {
       currentImage: null,
       currentUrl: null,
       currentSinger: "Harry Osborn",
-      btnIcon: Icons.play_arrow,
       isPlaying: false,
       duration: Duration(seconds: 0),
       position: Duration(days: 0),
-      audioQuery: new FlutterAudioQuery());
+      audioQuery: new FlutterAudioQuery(),
+      audioPlayer: AudioPlayer(mode: PlayerMode.MEDIA_PLAYER));
 
   void updateData(
       {String currentTitle,
       String currentUrl,
       String currentImage,
       String currentSinger,
-      IconData currentBtnIcon,
       bool currentIsPlaying,
       Duration duration,
       Duration position,
-      FlutterAudioQuery flutterAudioQuery, currentIndex}) {
+      FlutterAudioQuery flutterAudioQuery,
+      currentIndex}) {
     data.currentImage = currentImage;
     data.currentTitle = currentTitle;
     data.currentUrl = currentUrl;
@@ -87,15 +81,73 @@ class DataListClass extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> playMusic(SongInfo song) async {
+    // print(url);
+    stopMusic();
+    if (await data.audioPlayer.play(song.filePath) == 1) {
+      data.isPlaying = true;
+      data.currentUrl = song.filePath;
+      // TODO: Send the
+      data.currentTitle = song.title;
+      print("Artist: ${song.artist}");
+      data.currentSinger = song.artist;
+      data.audioPlayer.onDurationChanged.listen((Duration d) {
+        data.duration = d;
+        notifyListeners();
+      });
+      data.audioPlayer.onAudioPositionChanged.listen((Duration p) {
+        data.position = p;
+        notifyListeners();
+      });
+      notifyListeners();
+    }
+    // data.isPlaying = true;
+    // notifyListeners();
+  }
+
+  Future<void> seekTo(double value) async {
+    await data.audioPlayer.seek(Duration(seconds: value.toInt()));
+  }
+
+  void stopMusic() {
+    data.audioPlayer.stop();
+    data.isPlaying = false;
+  }
+
+  void pauseMusic() {
+    data.audioPlayer.pause();
+    data.isPlaying = false;
+    notifyListeners();
+  }
+
+  void resumeMusic() {
+    data.audioPlayer.resume();
+    data.isPlaying = true;
+    notifyListeners();
+  }
+
   void updateAudioQuery() {
     data.audioQuery = new FlutterAudioQuery();
     notifyListeners();
   }
 
+  void seek(double value) {
+    data.audioPlayer.seek(Duration(seconds: value.toInt()));
+    notifyListeners();
+  }
+
+  void setDuration(event) {
+    data.duration = event;
+    notifyListeners();
+  }
+
+  void setPosition(event) {
+    data.position = event;
+    notifyListeners();
+  }
+
   Future<void> updateSongs() async {
     data.songs = await data.audioQuery.getSongs();
-    print("US");
-    print(data.songs);
     return;
   }
 }

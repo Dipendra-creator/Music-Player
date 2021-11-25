@@ -28,87 +28,103 @@ class _SongsPageState extends State<SongsPage> {
   bool isPlaying = false;
   String currentSong = "";
 
-  void playMusic(String url) async {
-    if (isPlaying && currentSong != null) {
-      audioPlayer.stop();
-      int result = await audioPlayer.play(url);
-      print(result);
-      if (result == 1) {
-        setState(() {
-          currentSong = url;
-        });
-      }
-    } else if (!isPlaying) {
-      int result = await audioPlayer.play(url);
-      if (result == 1) {
-        setState(() {
-          isPlaying = true;
-        });
-        Provider.of<DataListClass>(context, listen: false).updateData(
-            currentBtnIcon: Icons.pause,
-            currentUrl: Provider.of<DataListClass>(context, listen: false)
-                .data
-                .currentUrl,
-            currentSinger: Provider.of<DataListClass>(context, listen: false)
-                .data
-                .currentSinger,
-            currentTitle: Provider.of<DataListClass>(context, listen: false)
-                .data
-                .currentTitle,
-            currentImage: Provider.of<DataListClass>(context, listen: false)
-                .data
-                .currentImage,
-            currentIsPlaying: isPlaying,
-            duration: Duration(seconds: 0),
-            position: Duration(seconds: 0));
-      }
-    }
+  // void playMusic(String url) async {
+  //   if (isPlaying && currentSong != null) {
+  //     await audioPlayer.stop();
+  //     Provider.of<DataListClass>(context, listen: false).resumeMusic();
 
-    audioPlayer.onDurationChanged.listen((event) {
-      Provider.of<DataListClass>(context, listen: false).updateData(
-        currentBtnIcon:
-            Provider.of<DataListClass>(context, listen: false).data.btnIcon,
-        currentUrl:
-            Provider.of<DataListClass>(context, listen: false).data.currentUrl,
-        currentSinger: Provider.of<DataListClass>(context, listen: false)
-            .data
-            .currentSinger,
-        currentTitle: Provider.of<DataListClass>(context, listen: false)
-            .data
-            .currentTitle,
-        currentImage: Provider.of<DataListClass>(context, listen: false)
-            .data
-            .currentImage,
-        currentIsPlaying:
-            Provider.of<DataListClass>(context, listen: false).data.isPlaying,
-        duration: event,
-        position:
-            Provider.of<DataListClass>(context, listen: false).data.position,
-      );
-    });
-    audioPlayer.onAudioPositionChanged.listen((event) {
-      Provider.of<DataListClass>(context, listen: false).updateData(
-        currentBtnIcon:
-            Provider.of<DataListClass>(context, listen: false).data.btnIcon,
-        currentUrl:
-            Provider.of<DataListClass>(context, listen: false).data.currentUrl,
-        currentSinger: Provider.of<DataListClass>(context, listen: false)
-            .data
-            .currentSinger,
-        currentTitle: Provider.of<DataListClass>(context, listen: false)
-            .data
-            .currentTitle,
-        currentImage: Provider.of<DataListClass>(context, listen: false)
-            .data
-            .currentImage,
-        currentIsPlaying:
-            Provider.of<DataListClass>(context, listen: false).data.isPlaying,
-        duration:
-            Provider.of<DataListClass>(context, listen: false).data.duration,
-        position: event,
-      );
-    });
-  }
+  //     int result = await audioPlayer.play(url);
+  //     print(result);
+  //     if (result == 1) {
+  //       setState(() {
+  //         currentSong = url;
+  //       });
+  //     }
+  //   } else if (!isPlaying) {
+  //     int result = await audioPlayer.play(url);
+  //     // print("45" + result.toString());
+  //     Provider.of<DataListClass>(context, listen: false).playMusic();
+  //     // if (result == 1) {
+  //     // setState(() {
+  //     // isPlaying = true;
+  //     // });
+  //     Provider.of<DataListClass>(context, listen: false).updateData(
+  //         currentUrl: Provider.of<DataListClass>(context, listen: false)
+  //             .data
+  //             .currentUrl,
+  //         currentSinger: Provider.of<DataListClass>(context, listen: false)
+  //             .data
+  //             .currentSinger,
+  //         currentTitle: Provider.of<DataListClass>(context, listen: false)
+  //             .data
+  //             .currentTitle,
+  //         currentImage: Provider.of<DataListClass>(context, listen: false)
+  //             .data
+  //             .currentImage,
+  //         currentIsPlaying: isPlaying,
+  //         duration: Duration(seconds: 0),
+  //         position: Duration(seconds: 0));
+  //   }
+  //   Provider.of<DataListClass>(context)
+  //       .data
+  //       .audioPlayer
+  //       .onDurationChanged
+  //       .listen((event) {
+  //     Provider.of<DataListClass>(context).setDuration(event);
+  //   });
+  //   Provider.of<DataListClass>(context)
+  //       .data
+  //       .audioPlayer
+  //       .onAudioPositionChanged
+  //       .listen((event) {
+  //     Provider.of<DataListClass>(context).setPosition(event);
+  //   });
+
+  // audioPlayer.onDurationChanged.listen((event) {
+  //   Provider.of<DataListClass>(context, listen: false).updateData(
+  //     currentBtnIcon:
+  //         Provider.of<DataListClass>(context, listen: false).data.btnIcon,
+  //     currentUrl:
+  //         Provider.of<DataListClass>(context, listen: false).data.currentUrl,
+  //     currentSinger: Provider.of<DataListClass>(context, listen: false)
+  //         .data
+  //         .currentSinger,
+  //     currentTitle: Provider.of<DataListClass>(context, listen: false)
+  //         .data
+  //         .currentTitle,
+  //     currentImage: Provider.of<DataListClass>(context, listen: false)
+  //         .data
+  //         .currentImage,
+  //     currentIsPlaying:
+  //         Provider.of<DataListClass>(context, listen: false).data.isPlaying,
+  //     duration: event,
+  //     position:
+  //         Provider.of<DataListClass>(context, listen: false).data.position,
+  //   );
+  // });
+  // audioPlayer.onAudioPositionChanged.listen((event) {
+  //   Provider.of<DataListClass>(context, listen: false).updateData(
+  //     currentBtnIcon:
+  //         Provider.of<DataListClass>(context, listen: false).data.btnIcon,
+  //     currentUrl:
+  //         Provider.of<DataListClass>(context, listen: false).data.currentUrl,
+  //     currentSinger: Provider.of<DataListClass>(context, listen: false)
+  //         .data
+  //         .currentSinger,
+  //     currentTitle: Provider.of<DataListClass>(context, listen: false)
+  //         .data
+  //         .currentTitle,
+  //     currentImage: Provider.of<DataListClass>(context, listen: false)
+  //         .data
+  //         .currentImage,
+  //     currentIsPlaying:
+  //         Provider.of<DataListClass>(context, listen: false).data.isPlaying,
+  //     duration:
+  //         Provider.of<DataListClass>(context, listen: false).data.duration,
+  //     position: event,
+  //   );
+  // });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -151,26 +167,44 @@ class _SongsPageState extends State<SongsPage> {
                           return ListView.builder(
                             itemCount: songsList.length,
                             itemBuilder: (context, index) => customListTile(
-                              onTap: () {
-                                String currentTitle = songsList[index].title;
-                                String currentUrl = songsList[index].filePath;
-                                String currentImage =
-                                    songsList[index].albumArtwork;
-                                String currentSinger = songsList[index].artist;
-                                IconData currentBtnIcon = Icons.pause;
-                                
-                                playMusic(currentUrl);
-                                Provider.of<DataListClass>(context,
+                              onTap: () async {
+                                // String currentTitle = songsList[index].title;
+                                // String currentUrl = songsList[index].filePath;
+                                // String currentImage =
+                                //     songsList[index].albumArtwork;
+                                // String currentSinger = songsList[index].artist;
+                                // IconData currentBtnIcon = Icons.pause;
+                                await Provider.of<DataListClass>(context,
                                         listen: false)
-                                    .updateData(
-                                        currentTitle: currentTitle,
-                                        currentSinger: currentSinger,
-                                        currentUrl: currentUrl,
-                                        currentImage: currentImage,
-                                        currentBtnIcon: currentBtnIcon,
-                                        currentIsPlaying: isPlaying,
-                                        duration: Duration(seconds: 0),
-                                        position: Duration(seconds: 0));
+                                    .playMusic(songsList[index]);
+                                // Provider.of<DataListClass>(context)
+                                //     .data
+                                //     .audioPlayer
+                                //     .onDurationChanged
+                                //     .listen((event) {
+                                //   Provider.of<DataListClass>(context)
+                                //       .setDuration(event);
+                                // });
+                                // Provider.of<DataListClass>(context)
+                                //     .data
+                                //     .audioPlayer
+                                //     .onAudioPositionChanged
+                                //     .listen((event) {
+                                //   Provider.of<DataListClass>(context)
+                                //       .setPosition(event);
+                                // });
+                                // print("Done");
+                                // playMusic(songsList[index].filePath);
+
+                                // updateData(
+                                //     currentTitle: currentTitle,
+                                //     currentSinger: currentSinger,
+                                //     currentUrl: currentUrl,
+                                //     currentImage: currentImage,
+                                //     currentBtnIcon: currentBtnIcon,
+                                //     currentIsPlaying: isPlaying,
+                                //     duration: Duration(seconds: 0),
+                                //     position: Duration(seconds: 0));
                               },
                               title: songsList[index].title,
                               artist: songsList[index].artist,
@@ -228,11 +262,11 @@ Widget customListTile(
                       ),
                     ),
                     // scrollAxis: Axis.horizontal,
-                    textDirection : TextDirection.rtl,
+                    textDirection: TextDirection.rtl,
                     animationDuration: Duration(seconds: 1),
                     backDuration: Duration(milliseconds: 5000),
                     pauseDuration: Duration(milliseconds: 2000),
-                    directionMarguee: DirectionMarguee.TwoDirection,
+                    directionMarguee: DirectionMarguee.oneDirection,
                   ),
                   // Removed SizedBox to remove Overflow
                   // SizedBox(height: 5.0),
@@ -245,7 +279,7 @@ Widget customListTile(
                       ),
                     ),
                     // scrollAxis: Axis.horizontal,
-                    textDirection : TextDirection.rtl,
+                    textDirection: TextDirection.rtl,
                     animationDuration: Duration(seconds: 1),
                     backDuration: Duration(milliseconds: 5000),
                     pauseDuration: Duration(milliseconds: 2000),
@@ -269,6 +303,7 @@ Widget musicCard({String title, String singer, String cover, onTap}) {
     child: Padding(
       padding: EdgeInsets.only(top: 15, bottom: 15, left: 10, right: 5),
       child: InkWell(
+        // TODO: What is this?
         onTap: () {},
         child: Container(
           decoration: BoxDecoration(

@@ -128,7 +128,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         buildDefaultAppBar: buildAppBar);
   }
 
-
   void askStoragePermission() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool storageAlreadyDeniedOnce =
@@ -240,9 +239,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 }
 
 class BottomPlayer extends StatelessWidget {
-  void seek(double value) {
-    audioPlayer.seek(Duration(seconds: value.toInt()));
-  }
+  // void seek(double value) {
+  //   audioPlayer.seek(Duration(seconds: value.toInt()));
+  // }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -276,14 +276,15 @@ class BottomPlayer extends StatelessWidget {
                   .duration
                   .inSeconds
                   .toDouble(),
-              onChanged: (value) {
-                {
-                  // TODO: Change to seekTo
-                  Provider.of<DataListClass>(context, listen: false)
-                      .data
-                      .seek(value);
-                }
-              },
+              onChanged:
+                  Provider.of<DataListClass>(context, listen: false).seekTo,
+              // (value) {
+              //   {
+              //     // TODO: Change to seekTo
+              //     Provider.of<DataListClass>(context, listen: false).seekTo(value);
+              //   }
+              // }
+              // ,
             ),
             // Error Image Soource
             Padding(
@@ -297,15 +298,14 @@ class BottomPlayer extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
                       image: DecorationImage(
-                        image: NetworkImage(
-                            "https://w7.pngwing.com/pngs/710/955/png-transparent-vinyl-record-artwork-phonograph-record-compact-disc-lp-record-disc-jockey-symbol-miscellaneous-classical-music-sound.png"),
+                        image: AssetImage('assets/images/no_cover.png'),
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
-                  // SizedBox(
-                  //   width: 5.0,
-                  // ),
+                  SizedBox(
+                    width: 5.0,
+                  ),
                   Container(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -334,6 +334,7 @@ class BottomPlayer extends StatelessWidget {
                         ),
                         Marquee(
                           child: Text(
+                            // TODO: Update Singer on Song Change
                             Provider.of<DataListClass>(context)
                                 .data
                                 .currentSinger,
@@ -352,80 +353,79 @@ class BottomPlayer extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                    icon: Icon(
-                        Provider.of<DataListClass>(context, listen: false)
-                            .data
-                            .btnIcon),
+                    icon: Icon(Icons.play_arrow),
                     onPressed: () {
-                      {
-                        print(Provider.of<DataListClass>(context, listen: false)
-                            .data
-                            .isPlaying);
-                      }
-                      if (Provider.of<DataListClass>(context, listen: false)
-                          .data
-                          .isPlaying) {
-                        audioPlayer.pause();
-                        Provider.of<DataListClass>(context, listen: false)
-                            .updateData(
-                          currentBtnIcon: Icons.play_arrow,
-                          currentUrl:
-                              Provider.of<DataListClass>(context, listen: false)
-                                  .data
-                                  .currentUrl,
-                          currentSinger:
-                              Provider.of<DataListClass>(context, listen: false)
-                                  .data
-                                  .currentSinger,
-                          currentTitle:
-                              Provider.of<DataListClass>(context, listen: false)
-                                  .data
-                                  .currentTitle,
-                          currentImage:
-                              Provider.of<DataListClass>(context, listen: false)
-                                  .data
-                                  .currentImage,
-                          currentIsPlaying: false,
-                          duration:
-                              Provider.of<DataListClass>(context, listen: false)
-                                  .data
-                                  .duration,
-                          position:
-                              Provider.of<DataListClass>(context, listen: false)
-                                  .data
-                                  .position,
-                        );
+                      DataListClass songData =
+                          Provider.of<DataListClass>(context, listen: false);
+
+                      print(songData.data.isPlaying);
+                      if (songData.data.isPlaying) {
+                        print("Music Playing");
+                        songData.pauseMusic();
+
+                        // audioPlayer.pause();
+
+                        // Provider.of<DataListClass>(context, listen: false)
+                        //     .updateData(
+                        //   currentUrl:
+                        //       Provider.of<DataListClass>(context, listen: false)
+                        //           .data
+                        //           .currentUrl,
+                        //   currentSinger:
+                        //       Provider.of<DataListClass>(context, listen: false)
+                        //           .data
+                        //           .currentSinger,
+                        //   currentTitle:
+                        //       Provider.of<DataListClass>(context, listen: false)
+                        //           .data
+                        //           .currentTitle,
+                        //   currentImage:
+                        //       Provider.of<DataListClass>(context, listen: false)
+                        //           .data
+                        //           .currentImage,
+                        //   currentIsPlaying: false,
+                        //   duration:
+                        //       Provider.of<DataListClass>(context, listen: false)
+                        //           .data
+                        //           .duration,
+                        //   position:
+                        //       Provider.of<DataListClass>(context, listen: false)
+                        //           .data
+                        //           .position,
+                        // );
                       } else {
-                        audioPlayer.resume();
-                        Provider.of<DataListClass>(context, listen: false)
-                            .updateData(
-                          currentBtnIcon: Icons.pause,
-                          currentUrl:
-                              Provider.of<DataListClass>(context, listen: false)
-                                  .data
-                                  .currentUrl,
-                          currentSinger:
-                              Provider.of<DataListClass>(context, listen: false)
-                                  .data
-                                  .currentSinger,
-                          currentTitle:
-                              Provider.of<DataListClass>(context, listen: false)
-                                  .data
-                                  .currentTitle,
-                          currentImage:
-                              Provider.of<DataListClass>(context, listen: false)
-                                  .data
-                                  .currentImage,
-                          currentIsPlaying: true,
-                          duration:
-                              Provider.of<DataListClass>(context, listen: false)
-                                  .data
-                                  .duration,
-                          position:
-                              Provider.of<DataListClass>(context, listen: false)
-                                  .data
-                                  .position,
-                        );
+                        songData.resumeMusic();
+                        // print("Music Paused");
+                        // audioPlayer.resume();
+                        // Provider.of<DataListClass>(context, listen: false)
+                        //     .updateData(
+                        //   currentBtnIcon: Icons.pause,
+                        //   currentUrl:
+                        //       Provider.of<DataListClass>(context, listen: false)
+                        //           .data
+                        //           .currentUrl,
+                        //   currentSinger:
+                        //       Provider.of<DataListClass>(context, listen: false)
+                        //           .data
+                        //           .currentSinger,
+                        //   currentTitle:
+                        //       Provider.of<DataListClass>(context, listen: false)
+                        //           .data
+                        //           .currentTitle,
+                        //   currentImage:
+                        //       Provider.of<DataListClass>(context, listen: false)
+                        //           .data
+                        //           .currentImage,
+                        //   currentIsPlaying: true,
+                        //   duration:
+                        //       Provider.of<DataListClass>(context, listen: false)
+                        //           .data
+                        //           .duration,
+                        //   position:
+                        //       Provider.of<DataListClass>(context, listen: false)
+                        //           .data
+                        //           .position,
+                        // );
                       }
                     },
                     iconSize: 42,

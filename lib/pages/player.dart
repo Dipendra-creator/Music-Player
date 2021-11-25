@@ -92,14 +92,10 @@ class _PlayerState extends State<Player> {
                   child: Text(
                     Provider.of<DataListClass>(context).data.currentTitle ??
                         "No Music",
-                    // "Music Name",
                     style: kTextStyle,
                   ),
-                  textDirection : TextDirection.rtl,
-                  animationDuration: Duration(seconds: 1),
-                  backDuration: Duration(milliseconds: 5000),
-                  pauseDuration: Duration(milliseconds: 2000),
-                  directionMarguee: DirectionMarguee.TwoDirection,
+                  directionMarguee: DirectionMarguee.oneDirection,
+                  pauseDuration: Duration(milliseconds: 1000),
                 ),
               ),
             ),
@@ -124,7 +120,10 @@ class _PlayerState extends State<Player> {
           ]),
           Center(
             child: Text(
-              Provider.of<DataListClass>(context).data.currentSinger,
+              Provider.of<DataListClass>(context).data.currentSinger !=
+                      "<unknown>"
+                  ? ""
+                  : Provider.of<DataListClass>(context).data.currentSinger,
               // "Author Name",
               style: const TextStyle(
                   fontFamily: 'Varela', fontSize: 22, color: Colors.black45),
