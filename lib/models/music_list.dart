@@ -87,9 +87,7 @@ class DataListClass extends ChangeNotifier {
     if (await data.audioPlayer.play(song.filePath) == 1) {
       data.isPlaying = true;
       data.currentUrl = song.filePath;
-      // TODO: Send the
       data.currentTitle = song.title;
-      print("Artist: ${song.artist}");
       data.currentSinger = song.artist;
       data.audioPlayer.onDurationChanged.listen((Duration d) {
         data.duration = d;

@@ -245,6 +245,7 @@ class BottomPlayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DataListClass songData = Provider.of<DataListClass>(context, listen: false);
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -353,14 +354,13 @@ class BottomPlayer extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.play_arrow),
+                    icon: Icon(songData.data.isPlaying
+                        ? Icons.pause
+                        : Icons.play_arrow),
                     onPressed: () {
-                      DataListClass songData =
-                          Provider.of<DataListClass>(context, listen: false);
-
-                      print(songData.data.isPlaying);
+                      // print(songData.data.isPlaying);
                       if (songData.data.isPlaying) {
-                        print("Music Playing");
+                        // print("Music Playing");
                         songData.pauseMusic();
 
                         // audioPlayer.pause();
