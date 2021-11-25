@@ -47,6 +47,7 @@ class _PlayerState extends State<Player> {
   shuffleState currentShuffleState = shuffleState.disabled;
   @override
   Widget build(BuildContext context) {
+    bool isPlaying = Provider.of<DataListClass>(context).data.isPlaying;
     return Scaffold(
       body: SafeArea(
           child: ListView(
@@ -74,6 +75,7 @@ class _PlayerState extends State<Player> {
                 size: 35,
               ),
               onPressed: () {
+                // TODO: Connect to DataListClass
                 setState(() {
                   like = !like;
                   if (like) {
@@ -88,14 +90,16 @@ class _PlayerState extends State<Player> {
             Center(
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.65,
-                child: Marquee(
-                  child: Text(
-                    Provider.of<DataListClass>(context).data.currentTitle ??
-                        "No Music",
-                    style: kTextStyle,
+                child: Center(
+                  child: Marquee(
+                    child: Text(
+                      Provider.of<DataListClass>(context).data.currentTitle ??
+                          "No Music",
+                      style: kTextStyle,
+                    ),
+                    directionMarguee: DirectionMarguee.oneDirection,
+                    pauseDuration: Duration(milliseconds: 1000),
                   ),
-                  directionMarguee: DirectionMarguee.oneDirection,
-                  pauseDuration: Duration(milliseconds: 1000),
                 ),
               ),
             ),
@@ -119,8 +123,10 @@ class _PlayerState extends State<Player> {
             ),
           ]),
           Center(
+            // TODO: Only load the text widget if the song has an author, remove otherwise
             child: Text(
-              Provider.of<DataListClass>(context).data.currentSinger !=
+              // Show nothing if the author is not available
+              Provider.of<DataListClass>(context).data.currentSinger ==
                       "<unknown>"
                   ? ""
                   : Provider.of<DataListClass>(context).data.currentSinger,
@@ -143,11 +149,8 @@ class _PlayerState extends State<Player> {
                 .duration
                 .inSeconds
                 .toDouble(),
-            onChanged: (value) {
-              {
-                // Provider.of<DataListClass>(context).updateData()
-              }
-            },
+            onChanged:
+                Provider.of<DataListClass>(context, listen: false).seekTo,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -182,10 +185,24 @@ class _PlayerState extends State<Player> {
               ),
               Container(
                 child: IconButton(
-                    onPressed: () {},
-                    // Icons.pause_outline
-                    // TODO: Change Icon through the state of the music
-                    icon: Icon(Icons.play_arrow_outlined, size: 50)),
+                  onPressed: () {
+                    print(isPlaying);
+                    if (isPlaying) {
+                      Provider.of<DataListClass>(context, listen: false)
+                          .pauseMusic();
+                    } else {
+                      Provider.of<DataListClass>(context, listen: false)
+                          .resumeMusic();
+                    }
+                  },
+                  // Icons.pause_outline
+                  // TODO: Change Icon through the state of the music
+                  icon: Icon(
+                      isPlaying
+                          ? Icons.pause_outlined
+                          : Icons.play_arrow_outlined,
+                      size: 50),
+                ),
                 height: 80,
                 width: 80,
                 decoration: BoxDecoration(

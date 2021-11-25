@@ -155,7 +155,7 @@ class _SongsPageState extends State<SongsPage> {
                             AsyncSnapshot<List<SongInfo>> snapshot) {
                           if (snapshot.hasData) {
                             songsList = snapshot.data;
-                            print(snapshot.data);
+                            // print(snapshot.data);
                           } else {
                             // Show a Progress Indicator until the data has been collected
                             return SizedBox(

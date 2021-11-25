@@ -103,7 +103,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           IconButton(
             icon: Icon(Icons.queue_music, size: 35, color: Colors.black45),
             onPressed: () {
-              print('Music Queue');
+              // TODO: Implement Music Queue
+              // print('Music Queue');
             },
           )
         ]);
@@ -112,7 +113,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   // TODO: Display the queries to screen and connected it to the audio player
   void searchQuery(String query) async {
     List<SongInfo> results = await _audioQuery.searchSongs(query: query);
-    print(results);
+    // print(results);
   }
 
   @override
@@ -164,7 +165,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       if (!(await Permission.storage.request().isGranted)) {
         await prefs.setBool('storageAlreadyDeniedOnce', false);
       } else if (await Permission.storage.isGranted) {
-        print("Acquired");
+        // print("Acquired");
       }
     }
   }
@@ -180,9 +181,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             Provider.of<DataListClass>(context, listen: false)
                 .updateAudioQuery();
 
-            print("Songs");
-            print(
-                Provider.of<DataListClass>(context, listen: false).data.songs);
+            // print("Songs");
+            // print(
+            // Provider.of<DataListClass>(context, listen: false).data.songs);
             return Provider.of<DataListClass>(context, listen: false)
                 .updateSongs();
           },
@@ -335,10 +336,15 @@ class BottomPlayer extends StatelessWidget {
                         ),
                         Marquee(
                           child: Text(
-                            // TODO: Update Singer on Song Change
+                            // TODO: Only load the text widget if the song has an author, remove otherwise
                             Provider.of<DataListClass>(context)
-                                .data
-                                .currentSinger,
+                                        .data
+                                        .currentSinger ==
+                                    "<unknown>"
+                                ? ""
+                                : Provider.of<DataListClass>(context)
+                                    .data
+                                    .currentSinger,
                             style: TextStyle(
                               color: Colors.grey,
                               // fontSize: 14,
