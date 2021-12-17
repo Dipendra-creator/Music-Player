@@ -1,9 +1,10 @@
 import 'dart:io';
-import 'package:marquee_widget/marquee_widget.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
+import 'package:marquee_widget/marquee_widget.dart';
 import 'package:provider/provider.dart';
+
 import '../models/music_list.dart';
 
 List<SongInfo> songsList;
@@ -24,107 +25,8 @@ class _SongsPageState extends State<SongsPage> {
     super.initState();
   }
 
-  @override
   bool isPlaying = false;
   String currentSong = "";
-
-  // void playMusic(String url) async {
-  //   if (isPlaying && currentSong != null) {
-  //     await audioPlayer.stop();
-  //     Provider.of<DataListClass>(context, listen: false).resumeMusic();
-
-  //     int result = await audioPlayer.play(url);
-  //     print(result);
-  //     if (result == 1) {
-  //       setState(() {
-  //         currentSong = url;
-  //       });
-  //     }
-  //   } else if (!isPlaying) {
-  //     int result = await audioPlayer.play(url);
-  //     // print("45" + result.toString());
-  //     Provider.of<DataListClass>(context, listen: false).playMusic();
-  //     // if (result == 1) {
-  //     // setState(() {
-  //     // isPlaying = true;
-  //     // });
-  //     Provider.of<DataListClass>(context, listen: false).updateData(
-  //         currentUrl: Provider.of<DataListClass>(context, listen: false)
-  //             .data
-  //             .currentUrl,
-  //         currentSinger: Provider.of<DataListClass>(context, listen: false)
-  //             .data
-  //             .currentSinger,
-  //         currentTitle: Provider.of<DataListClass>(context, listen: false)
-  //             .data
-  //             .currentTitle,
-  //         currentImage: Provider.of<DataListClass>(context, listen: false)
-  //             .data
-  //             .currentImage,
-  //         currentIsPlaying: isPlaying,
-  //         duration: Duration(seconds: 0),
-  //         position: Duration(seconds: 0));
-  //   }
-  //   Provider.of<DataListClass>(context)
-  //       .data
-  //       .audioPlayer
-  //       .onDurationChanged
-  //       .listen((event) {
-  //     Provider.of<DataListClass>(context).setDuration(event);
-  //   });
-  //   Provider.of<DataListClass>(context)
-  //       .data
-  //       .audioPlayer
-  //       .onAudioPositionChanged
-  //       .listen((event) {
-  //     Provider.of<DataListClass>(context).setPosition(event);
-  //   });
-
-  // audioPlayer.onDurationChanged.listen((event) {
-  //   Provider.of<DataListClass>(context, listen: false).updateData(
-  //     currentBtnIcon:
-  //         Provider.of<DataListClass>(context, listen: false).data.btnIcon,
-  //     currentUrl:
-  //         Provider.of<DataListClass>(context, listen: false).data.currentUrl,
-  //     currentSinger: Provider.of<DataListClass>(context, listen: false)
-  //         .data
-  //         .currentSinger,
-  //     currentTitle: Provider.of<DataListClass>(context, listen: false)
-  //         .data
-  //         .currentTitle,
-  //     currentImage: Provider.of<DataListClass>(context, listen: false)
-  //         .data
-  //         .currentImage,
-  //     currentIsPlaying:
-  //         Provider.of<DataListClass>(context, listen: false).data.isPlaying,
-  //     duration: event,
-  //     position:
-  //         Provider.of<DataListClass>(context, listen: false).data.position,
-  //   );
-  // });
-  // audioPlayer.onAudioPositionChanged.listen((event) {
-  //   Provider.of<DataListClass>(context, listen: false).updateData(
-  //     currentBtnIcon:
-  //         Provider.of<DataListClass>(context, listen: false).data.btnIcon,
-  //     currentUrl:
-  //         Provider.of<DataListClass>(context, listen: false).data.currentUrl,
-  //     currentSinger: Provider.of<DataListClass>(context, listen: false)
-  //         .data
-  //         .currentSinger,
-  //     currentTitle: Provider.of<DataListClass>(context, listen: false)
-  //         .data
-  //         .currentTitle,
-  //     currentImage: Provider.of<DataListClass>(context, listen: false)
-  //         .data
-  //         .currentImage,
-  //     currentIsPlaying:
-  //         Provider.of<DataListClass>(context, listen: false).data.isPlaying,
-  //     duration:
-  //         Provider.of<DataListClass>(context, listen: false).data.duration,
-  //     position: event,
-  //   );
-  // });
-  // }
 
   @override
   Widget build(BuildContext context) {

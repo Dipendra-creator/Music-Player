@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:marquee_widget/marquee_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:smash_media/models/music_list.dart';
-import 'package:marquee_widget/marquee_widget.dart';
 
 import '../constants.dart';
 

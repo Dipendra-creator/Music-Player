@@ -1,5 +1,6 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
@@ -12,6 +13,7 @@ import 'package:smash_media/constants.dart';
 import 'package:smash_media/models/music_list.dart';
 import 'package:smash_media/pages/player.dart';
 import 'package:smash_media/pages/songs_page.dart';
+
 import './pages/songs_page.dart';
 
 void main() {
@@ -71,6 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return ChangeNotifierProvider<DataListClass>(
       create: (context) => DataListClass(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: SplashScreen(),
       ),
     );
@@ -85,7 +88,6 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   SearchBar _searchBar;
   TabController _tabController;
-  FlutterAudioQuery _audioQuery;
 
   AppBar buildAppBar(BuildContext context) {
     return new AppBar(
@@ -98,22 +100,25 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           },
         ),
         actions: [
-          // Old Refresh Indicator, removed since Pull to Refresh
-          // IconButton(onPressed: () => {}, icon: Icon(Icons.refresh_rounded,  size: 35, color: Colors.black45)),
           IconButton(
             icon: Icon(Icons.queue_music, size: 35, color: Colors.black45),
             onPressed: () {
               // TODO: Implement Music Queue
-              // print('Music Queue');
             },
           )
         ]);
   }
 
   // TODO: Display the queries to screen and connected it to the audio player
-  void searchQuery(String query) async {
-    List<SongInfo> results = await _audioQuery.searchSongs(query: query);
-    // print(results);
+  Future<void> searchQuery(String query) async {
+    DataListClass pro = Provider.of<DataListClass>(context, listen: false);
+    List<SongInfo> results =
+        await pro.data.audioQuery.searchSongs(query: query);
+    log("Found");
+    results.forEach((element) {
+      log(element.title);
+    });
+    // results.map((e) => log("${e.title}"));
   }
 
   @override
@@ -121,12 +126,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     super.initState();
     askStoragePermission();
     _tabController = TabController(length: 1, vsync: this);
-    _audioQuery = FlutterAudioQuery();
     _searchBar = new SearchBar(
         inBar: false,
         setState: setState,
         onSubmitted: searchQuery,
-        buildDefaultAppBar: buildAppBar);
+        buildDefaultAppBar: buildAppBar,
+        onChanged: searchQuery);
   }
 
   void askStoragePermission() async {
@@ -180,7 +185,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             // Refreshes the songs list in case the user has added some new songs to device storage
             Provider.of<DataListClass>(context, listen: false)
                 .updateAudioQuery();
-
             // print("Songs");
             // print(
             // Provider.of<DataListClass>(context, listen: false).data.songs);
