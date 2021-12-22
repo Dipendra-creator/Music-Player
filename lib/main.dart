@@ -17,7 +17,7 @@ import 'package:smash_media/pages/songs_page.dart';
 import './pages/songs_page.dart';
 
 void main() {
-  runApp(MyHomePage());
+  runApp(MusicPlayer());
 }
 
 class SplashScreen extends StatefulWidget {
@@ -25,17 +25,17 @@ class SplashScreen extends StatefulWidget {
   _SplashScreenState createState() => _SplashScreenState();
 }
 
+// This is the Splash Screen, with a circular progress indicator
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    Timer(Duration(seconds: 5), () {
+    Timer(Duration(seconds: 1), () {
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (_) => Home()));
     });
   }
-
+// 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,12 +62,12 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class MusicPlayer extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MusicPlayerState createState() => _MusicPlayerState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MusicPlayerState extends State<MusicPlayer> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<DataListClass>(
@@ -118,7 +118,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     results.forEach((element) {
       log(element.title);
     });
-    // results.map((e) => log("${e.title}"));
   }
 
   @override
@@ -185,9 +184,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             // Refreshes the songs list in case the user has added some new songs to device storage
             Provider.of<DataListClass>(context, listen: false)
                 .updateAudioQuery();
-            // print("Songs");
-            // print(
-            // Provider.of<DataListClass>(context, listen: false).data.songs);
             return Provider.of<DataListClass>(context, listen: false)
                 .updateSongs();
           },
@@ -244,10 +240,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 }
 
 class BottomPlayer extends StatelessWidget {
-  // void seek(double value) {
-  //   audioPlayer.seek(Duration(seconds: value.toInt()));
-  // }
-
   @override
   Widget build(BuildContext context) {
     DataListClass songData = Provider.of<DataListClass>(context, listen: false);
@@ -284,13 +276,6 @@ class BottomPlayer extends StatelessWidget {
                   .toDouble(),
               onChanged:
                   Provider.of<DataListClass>(context, listen: false).seekTo,
-              // (value) {
-              //   {
-              //     // TODO: Change to seekTo
-              //     Provider.of<DataListClass>(context, listen: false).seekTo(value);
-              //   }
-              // }
-              // ,
             ),
             // Error Image Soource
             Padding(
@@ -340,7 +325,6 @@ class BottomPlayer extends StatelessWidget {
                         ),
                         Marquee(
                           child: Text(
-                            // TODO: Only load the text widget if the song has an author, remove otherwise
                             Provider.of<DataListClass>(context)
                                         .data
                                         .currentSinger ==
@@ -368,74 +352,10 @@ class BottomPlayer extends StatelessWidget {
                         ? Icons.pause
                         : Icons.play_arrow),
                     onPressed: () {
-                      // print(songData.data.isPlaying);
                       if (songData.data.isPlaying) {
-                        // print("Music Playing");
                         songData.pauseMusic();
-
-                        // audioPlayer.pause();
-
-                        // Provider.of<DataListClass>(context, listen: false)
-                        //     .updateData(
-                        //   currentUrl:
-                        //       Provider.of<DataListClass>(context, listen: false)
-                        //           .data
-                        //           .currentUrl,
-                        //   currentSinger:
-                        //       Provider.of<DataListClass>(context, listen: false)
-                        //           .data
-                        //           .currentSinger,
-                        //   currentTitle:
-                        //       Provider.of<DataListClass>(context, listen: false)
-                        //           .data
-                        //           .currentTitle,
-                        //   currentImage:
-                        //       Provider.of<DataListClass>(context, listen: false)
-                        //           .data
-                        //           .currentImage,
-                        //   currentIsPlaying: false,
-                        //   duration:
-                        //       Provider.of<DataListClass>(context, listen: false)
-                        //           .data
-                        //           .duration,
-                        //   position:
-                        //       Provider.of<DataListClass>(context, listen: false)
-                        //           .data
-                        //           .position,
-                        // );
                       } else {
                         songData.resumeMusic();
-                        // print("Music Paused");
-                        // audioPlayer.resume();
-                        // Provider.of<DataListClass>(context, listen: false)
-                        //     .updateData(
-                        //   currentBtnIcon: Icons.pause,
-                        //   currentUrl:
-                        //       Provider.of<DataListClass>(context, listen: false)
-                        //           .data
-                        //           .currentUrl,
-                        //   currentSinger:
-                        //       Provider.of<DataListClass>(context, listen: false)
-                        //           .data
-                        //           .currentSinger,
-                        //   currentTitle:
-                        //       Provider.of<DataListClass>(context, listen: false)
-                        //           .data
-                        //           .currentTitle,
-                        //   currentImage:
-                        //       Provider.of<DataListClass>(context, listen: false)
-                        //           .data
-                        //           .currentImage,
-                        //   currentIsPlaying: true,
-                        //   duration:
-                        //       Provider.of<DataListClass>(context, listen: false)
-                        //           .data
-                        //           .duration,
-                        //   position:
-                        //       Provider.of<DataListClass>(context, listen: false)
-                        //           .data
-                        //           .position,
-                        // );
                       }
                     },
                     iconSize: 42,

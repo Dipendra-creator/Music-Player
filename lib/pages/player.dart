@@ -34,7 +34,10 @@ enum shuffleState {
   disabled,
   enabled,
 }
-
+// In case if the author of the song is not available, nothing is displayed,
+// otherwise, the author name is displayed,
+// as in this case you can see the author name of the song is not present
+// But if we have the author name, then it is displayed
 class _PlayerState extends State<Player> {
   bool like = false, dislike = false;
   bool repeatPlaylist = false, repeatSong = false;
@@ -84,7 +87,6 @@ class _PlayerState extends State<Player> {
                   }
                 });
               },
-              // padding: EdgeInsets.only(left: 10),
             ),
             Center(
               child: Container(
@@ -129,7 +131,6 @@ class _PlayerState extends State<Player> {
                       "<unknown>"
                   ? ""
                   : Provider.of<DataListClass>(context).data.currentSinger,
-              // "Author Name",
               style: const TextStyle(
                   fontFamily: 'Varela', fontSize: 22, color: Colors.black45),
             ),
@@ -171,7 +172,6 @@ class _PlayerState extends State<Player> {
                     }
                   });
                 },
-                // padding: EdgeInsets.only(left: 10),
               ),
               IconButton(
                 icon: Icon(
@@ -180,12 +180,10 @@ class _PlayerState extends State<Player> {
                   size: 35,
                 ),
                 onPressed: () {},
-                // padding: EdgeInsets.only(left: 10),
               ),
               Container(
                 child: IconButton(
                   onPressed: () {
-                    print(isPlaying);
                     if (isPlaying) {
                       Provider.of<DataListClass>(context, listen: false)
                           .pauseMusic();
@@ -194,7 +192,6 @@ class _PlayerState extends State<Player> {
                           .resumeMusic();
                     }
                   },
-                  // Icons.pause_outline
                   // TODO: Change Icon through the state of the music
                   icon: Icon(
                       isPlaying
@@ -214,7 +211,6 @@ class _PlayerState extends State<Player> {
                   size: 35,
                 ),
                 onPressed: () {},
-                // padding: EdgeInsets.only(left: 10),
               ),
               IconButton(
                 icon: repeatIcon,
@@ -236,28 +232,9 @@ class _PlayerState extends State<Player> {
                     });
                   }
                 },
-                // padding: EdgeInsets.only(left: 10),
               ),
-              // IconButton(
-              //   icon: Icon(
-              //     color: Colors.black,
-              //     size: 35,
-              //   ),
-              //   onPressed: () {},
-              //   padding: EdgeInsets.only(left: 10),
-              // ),
-              // IconButton(
-              //   // padding: EdgeInsets.only(right: 60),
-              //   onPressed: () {},
-              //   icon: Image.asset(
-              //     'assets/images/next.png',
-              //     height: 100,
-              //     width: 100,
-              //   ),
-              // ),
             ],
           ),
-          // Image.asset('assets/images/previous.png'),
         ],
       )),
     );

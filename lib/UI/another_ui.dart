@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -96,7 +95,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           ],
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            // fit: BoxFit.fitWidth,
                             image: AssetImage('images/hamburger.png'),
                           )),
                     ),
@@ -314,57 +312,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
-              // Stack(
-              //   clipBehavior: Clip.none, alignment: Alignment.center,
-              //   children: <Widget>[
-              //     Container(
-              //       width: 250,
-              //       height: 100,
-              //       padding: EdgeInsets.all(55),
-              //       decoration: BoxDecoration(
-              //         boxShadow: [
-              //           BoxShadow(
-              //             color: Colors.purple,
-              //             spreadRadius: 10,
-              //             blurRadius: 100,
-              //             // offset: Offset(0,0),
-              //           ),
-              //         ],
-              //         borderRadius: BorderRadius.circular(25),
-              //         gradient: LinearGradient(
-              //           colors: [
-              //             Colors.purple.shade900,
-              //             Colors.purple.shade400,
-              //           ],
-              //         ),
-              //       ),
-              //     ),
-              //     Positioned(
-              //       top: 80,
-              //       child: Container(
-              //         width: 350,
-              //         height: 100,
-              //         decoration: BoxDecoration(
-              //           boxShadow: [
-              //             BoxShadow(
-              //               color: Colors.purple,
-              //               spreadRadius: 10,
-              //               blurRadius: 100,
-              //               // offset: Offset(0,0),
-              //             ),
-              //           ],
-              //           borderRadius: BorderRadius.circular(25),
-              //           gradient: LinearGradient(
-              //             colors: [
-              //               Colors.purple.shade100,
-              //               Colors.purple.shade200,
-              //             ],
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //   ],
-              // ),
             ],
           ),
         ),

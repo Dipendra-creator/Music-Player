@@ -3,12 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
-import 'package:smash_media/pages/songs_page.dart';
 
 AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
 
 Duration duration = new Duration();
 Duration position = new Duration();
+
+// This is the file for managing the state of the app.
+// It makes sure to reduce prop drilling in the widgets and components.
 
 class Data {
   String currentTitle;
@@ -33,13 +35,6 @@ class Data {
     this.audioQuery,
     this.audioPlayer,
   });
-
-  // {
-  // songs = this.audioQuery.getSongs();
-  // }
-
-  // get currentIndex =>
-  // songs.indexOf(songsList.firstWhere((song) => song.title == currentTitle));
 }
 
 class DataListClass extends ChangeNotifier {
@@ -97,8 +92,6 @@ class DataListClass extends ChangeNotifier {
       });
       notifyListeners();
     }
-    // data.isPlaying = true;
-    // notifyListeners();
   }
 
   Future<void> seekTo(double value) async {

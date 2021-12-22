@@ -70,43 +70,9 @@ class _SongsPageState extends State<SongsPage> {
                             itemCount: songsList.length,
                             itemBuilder: (context, index) => customListTile(
                               onTap: () async {
-                                // String currentTitle = songsList[index].title;
-                                // String currentUrl = songsList[index].filePath;
-                                // String currentImage =
-                                //     songsList[index].albumArtwork;
-                                // String currentSinger = songsList[index].artist;
-                                // IconData currentBtnIcon = Icons.pause;
                                 await Provider.of<DataListClass>(context,
                                         listen: false)
                                     .playMusic(songsList[index]);
-                                // Provider.of<DataListClass>(context)
-                                //     .data
-                                //     .audioPlayer
-                                //     .onDurationChanged
-                                //     .listen((event) {
-                                //   Provider.of<DataListClass>(context)
-                                //       .setDuration(event);
-                                // });
-                                // Provider.of<DataListClass>(context)
-                                //     .data
-                                //     .audioPlayer
-                                //     .onAudioPositionChanged
-                                //     .listen((event) {
-                                //   Provider.of<DataListClass>(context)
-                                //       .setPosition(event);
-                                // });
-                                // print("Done");
-                                // playMusic(songsList[index].filePath);
-
-                                // updateData(
-                                //     currentTitle: currentTitle,
-                                //     currentSinger: currentSinger,
-                                //     currentUrl: currentUrl,
-                                //     currentImage: currentImage,
-                                //     currentBtnIcon: currentBtnIcon,
-                                //     currentIsPlaying: isPlaying,
-                                //     duration: Duration(seconds: 0),
-                                //     position: Duration(seconds: 0));
                               },
                               title: songsList[index].title,
                               artist: songsList[index].artist,
@@ -125,6 +91,8 @@ class _SongsPageState extends State<SongsPage> {
   }
 }
 
+// All the music cards are generated here, using a list builder
+// which makes sure that even if there are 1000s of songs, the app doesn't crash
 Widget customListTile(
     {String title, String artist, String albumArtwork, onTap}) {
   return InkWell(
@@ -163,24 +131,19 @@ Widget customListTile(
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    // scrollAxis: Axis.horizontal,
                     textDirection: TextDirection.rtl,
                     animationDuration: Duration(seconds: 1),
                     backDuration: Duration(milliseconds: 5000),
                     pauseDuration: Duration(milliseconds: 2000),
                     directionMarguee: DirectionMarguee.oneDirection,
                   ),
-                  // Removed SizedBox to remove Overflow
-                  // SizedBox(height: 5.0),
                   Marquee(
                     child: Text(
                       artist,
                       style: TextStyle(
                         fontSize: 16,
-                        // fontWeight: FontWeight.w600,
                       ),
                     ),
-                    // scrollAxis: Axis.horizontal,
                     textDirection: TextDirection.rtl,
                     animationDuration: Duration(seconds: 1),
                     backDuration: Duration(milliseconds: 5000),

@@ -1,7 +1,9 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+// For code organization, 
+// we have properly separated all the constants in this file
+// and their names starts with the prefix "k"
 const TextStyle kTextStyle = const TextStyle(
     fontFamily: 'Varela',
     fontSize: 28,
